@@ -14,9 +14,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SMSHelper{
-    public static final String ACCOUNT_SID = "AC2380d9936869c08c9a920594ca916ee2";
-    public static final String AUTH_TOKEN = "3334e8c4c6ffe45eab41076b2675fe59";
+public class SMSHelper extends EncryptPasswords{
+    public static final String ACCOUNT_SID = decrypt("NBmKSzweHkDgoTDWTXxUeEEEDDds4iDk+kvjpSDRlUO2sFByMi0FbA==");
+    public static final String AUTH_TOKEN = decrypt("YITE1ImicNNdHBQZxeLFXJOTOAPK2D3UQWZJ90575BSJJSpQl9fUJg==");
 
     public static void sendMessage(String otp, String receiver) {
         String body = "Your One time password for Endows app login verification is "+ otp;

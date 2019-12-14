@@ -1,5 +1,7 @@
 package com.endows.app.service;
 
+import android.content.Context;
+
 import com.endows.app.callbacks.LoginCallback;
 import com.endows.app.models.app.LoginResponse;
 
@@ -9,7 +11,7 @@ public interface LoginService {
 
     // Trouble signing in
     void generateSmsVerificationCode(LoginCallback callback,String phoneNumber);
-    void generateEmailVerificationCode(LoginCallback callback,String emailId);
+    void generateEmailVerificationCode(LoginCallback callback, String emailId, Context context);
     void validateVerificationCode(LoginCallback callback,String code,String custId);
 
     // New Password

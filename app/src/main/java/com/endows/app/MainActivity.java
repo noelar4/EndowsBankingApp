@@ -29,19 +29,7 @@ public class MainActivity extends AppCompatActivity {
             byte[] b = new byte[inputStream.available()];
             inputStream.read(b);
             String htmlMsg = new String(b);
-            new EmailHelper().execute("vibin2joby@gmail.com",htmlMsg);
-
-            inputStream.close();
-
-            /*EncryptPasswords td= new EncryptPasswords();
-
-            String target="3334e8c4c6ffe45eab41076b2675fe59";
-            String encrypted=td.encrypt(target);
-            String decrypted=td.decrypt(encrypted);
-
-            System.out.println("String To Encrypt: "+ target);
-            System.out.println("Encrypted String:" + encrypted);
-            System.out.println("Decrypted String:" + decrypted);*/
+            new EmailHelper(this).execute("vibin2joby@gmail.com");
         } catch (Exception e) {
             e.printStackTrace();
         }

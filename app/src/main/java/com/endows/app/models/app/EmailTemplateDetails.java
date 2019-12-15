@@ -10,20 +10,24 @@ public class EmailTemplateDetails {
     private boolean isCardTemplate;
     private boolean isOtpTemplate;
     private boolean isTransactionTemplate;
+    private boolean isBeneficiaryTemplate;
     private CardDetails cardDetails;
     private TransactionHistory transactionHistory;
 
     public EmailTemplateDetails(String templateName, String senderEmailId, String verificationCode, boolean isCardTemplate,
-                                boolean isOtpTemplate, boolean isTransactionTemplate, CardDetails cardDetails, TransactionHistory transactionHistory) {
+                                boolean isOtpTemplate, boolean isTransactionTemplate, boolean isBeneficiaryTemplate, CardDetails cardDetails,
+                                TransactionHistory transactionHistory) {
         this.templateName = templateName;
         this.senderEmailId = senderEmailId;
         this.verificationCode = verificationCode;
         this.isCardTemplate = isCardTemplate;
         this.isOtpTemplate = isOtpTemplate;
         this.isTransactionTemplate = isTransactionTemplate;
+        this.isBeneficiaryTemplate = isBeneficiaryTemplate;
         this.cardDetails = cardDetails;
         this.transactionHistory = transactionHistory;
     }
+
 
     public String getTemplateName() {
         return templateName;
@@ -57,17 +61,7 @@ public class EmailTemplateDetails {
         return transactionHistory;
     }
 
-    @Override
-    public String toString() {
-        return "EmailTemplateDetails{" +
-                "templateName='" + templateName + '\'' +
-                ", senderEmailId='" + senderEmailId + '\'' +
-                ", verificationCode='" + verificationCode + '\'' +
-                ", isCardTemplate=" + isCardTemplate +
-                ", isOtpTemplate=" + isOtpTemplate +
-                ", isTransactionTemplate=" + isTransactionTemplate +
-                ", cardDetails=" + cardDetails +
-                ", transactionHistory=" + transactionHistory +
-                '}';
+    public boolean isBeneficiaryTemplate() {
+        return isBeneficiaryTemplate;
     }
 }

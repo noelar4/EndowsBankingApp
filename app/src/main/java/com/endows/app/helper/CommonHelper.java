@@ -1,9 +1,14 @@
 package com.endows.app.helper;
 
+import android.content.Context;
+
+import com.endows.app.models.app.EmailTemplateDetails;
+import com.endows.app.models.db.CardDetails;
 import com.endows.app.models.db.TransactionHistory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 public class CommonHelper {

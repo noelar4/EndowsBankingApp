@@ -3,7 +3,9 @@ package com.endows.app.views.fragments.login;
 import android.app.Application;
 
 import com.endows.app.callbacks.LoginCallback;
-import com.endows.app.common.MessageLiveData;
+import com.endows.app.common.BooleanLiveData;
+import com.endows.app.common.StringLiveData;
+import com.endows.app.helper.PreferenceManager;
 import com.endows.app.models.app.LoginResponse;
 import com.endows.app.serviceimpl.LoginServiceImpl;
 
@@ -12,23 +14,40 @@ import androidx.lifecycle.AndroidViewModel;
 
 public class LoginViewModel extends AndroidViewModel implements LoginCallback {
 
-    private MessageLiveData errorIndicator;
+    private StringLiveData errorIndicator;
+    private BooleanLiveData loginIndicator;
+    private StringLiveData cardNoIndicator;
 
     private LoginServiceImpl mLoginServiceImpl;
 
+    private boolean isCardSaveNeeded = false;
+
     public LoginViewModel(@NonNull Application application) {
         super(application);
-        errorIndicator = new MessageLiveData();
+        errorIndicator = new StringLiveData();
+        loginIndicator = new BooleanLiveData();
+        cardNoIndicator = new StringLiveData();
+
+        getCardNoFromPreference();
 
         mLoginServiceImpl = new LoginServiceImpl();
     }
 
-    MessageLiveData getErrorIndicator() {
+    StringLiveData getErrorIndicator() {
         return errorIndicator;
     }
 
-    void loginUser(String cardNo, String password) {
+    BooleanLiveData getLoginStatus() {
+        return loginIndicator;
+    }
+
+    StringLiveData getCardNo() {
+        return cardNoIndicator;
+    }
+
+    void loginUser(String cardNo, String password, boolean isCardSaveNeeded) {
         if (validate(cardNo, password)) {
+            this.isCardSaveNeeded = isCardSaveNeeded;
             mLoginServiceImpl.validateUserSignIn(this, cardNo, password);
         }
     }
@@ -54,9 +73,21 @@ public class LoginViewModel extends AndroidViewModel implements LoginCallback {
     @Override
     public void onLoginCallback(LoginResponse response) {
         if (response.isSuccess()) {
-            errorIndicator.setValue("Login Successful");
+            saveCardNumber("");
+            loginIndicator.setValue(true);
         } else {
             errorIndicator.setValue("Login failed");
         }
     }
+
+    private void saveCardNumber(String cardNo) {
+        PreferenceManager manager = new PreferenceManager(getApplication().getApplicationContext());
+        manager.setPreference(PreferenceManager.PreferenceKeys.PREF_USER_CARD_NO, cardNo);
+    }
+
+    private void getCardNoFromPreference() {
+        PreferenceManager manager = new PreferenceManager(getApplication().getApplicationContext());
+        cardNoIndicator.setValue(manager.getStringPreference(PreferenceManager.PreferenceKeys.PREF_USER_CARD_NO));
+    }
+
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-public class MessageLiveData extends MutableLiveData<String> {
+public class StringLiveData extends MutableLiveData<String> {
 
     @Override
     public void observe(@NonNull LifecycleOwner owner, @NonNull final Observer<? super String> observer) {

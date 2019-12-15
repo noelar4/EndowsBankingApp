@@ -3,21 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="Trouble sign in?"
     app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.endows.app.views.fragments.login.LoginFragment"
-        android:label="LoginFragment" />
+        android:name="com.endows.app.views.fragments.login.LoginFragment" />
     <fragment
         android:id="@+id/troubleFragment"
         android:name="com.endows.app.views.fragments.TroubleFragment"
-        android:label="fragment_trouble"
         tools:layout="@layout/fragment_trouble" />
     <fragment
         android:id="@+id/findAccountFragment"
         android:name="com.endows.app.views.fragments.FindAccountFragment"
-        android:label="fragment_find_account"
+        android:label="Find your account"
         tools:layout="@layout/fragment_find_account" />
     <fragment
         android:id="@+id/confirmAccountFragment"

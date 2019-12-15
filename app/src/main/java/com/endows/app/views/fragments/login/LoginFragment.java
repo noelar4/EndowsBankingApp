@@ -1,5 +1,6 @@
 package com.endows.app.views.fragments.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.endows.app.R;
-import com.endows.app.common.MessageLiveData;
+import com.endows.app.views.fragments.HomeActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,13 +65,31 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        mLoginViewModel.getLoginStatus().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean status) {
+                if (status) {
+                    goToHomeScreen();
+                }
+            }
+        });
+
+        mLoginViewModel.getCardNo().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null) {
+                    edtCardNo.setText(s);
+                }
+            }
+        });
+
         tvLoginSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String cardNo = edtCardNo.getText().toString();
                 String password = edtPassword.getText().toString();
 
-                mLoginViewModel.loginUser(cardNo, password);
+                mLoginViewModel.loginUser(cardNo, password, switchRemember.isChecked());
             }
         });
 
@@ -81,6 +100,12 @@ public class LoginFragment extends Fragment {
                 navController.navigate(R.id.troubleFragment);
             }
         });
+    }
+
+    private void goToHomeScreen() {
+        Intent intent = new Intent(getContext(), HomeActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
 

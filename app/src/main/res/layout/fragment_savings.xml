@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".views.fragments.hometop.SavingsFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_savings"
+        android:layout_margin="@dimen/_8sdp"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/avenir_heavy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_balance_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:textSize="@dimen/_20sdp"
+        app:layout_constraintVertical_bias="0.25"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/label_savings_balance"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:textSize="@dimen/_40sdp"
+        app:layout_constraintVertical_bias="0.40"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="$6,450"/>
+
+    <View
+        android:id="@+id/view_box_savings"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="@dimen/_16sdp"
+        android:paddingBottom="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:background="@drawable/bg_rounded_white_box"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_savings_balance"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_income_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:drawableStart="@drawable/ic_up_arrow"
+        android:drawablePadding="@dimen/_8sdp"
+        android:text="@string/label_savings_income"
+        android:textColor="@color/colorTextColor"
+        app:layout_constraintStart_toStartOf="@+id/view_box_savings"
+        app:layout_constraintTop_toTopOf="@+id/view_box_savings"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_savings_total_spend_title"
+        android:layout_marginStart="@dimen/_20sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_income_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$3,214"
+        android:textColor="@color/colorGreen"
+        android:fontFamily="@font/avenir_heavy"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintTop_toTopOf="@+id/view_box_savings"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintStart_toEndOf="@+id/tv_savings_income_title"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_expense_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:drawablePadding="@dimen/_8sdp"
+        android:drawableStart="@drawable/ic_down_arrow"
+        android:text="@string/label_savings_expence"
+        android:textColor="@color/colorTextColor"
+        app:layout_constraintStart_toStartOf="@+id/view_box_savings"
+        app:layout_constraintTop_toBottomOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintBottom_toBottomOf="@+id/view_box_savings"
+        android:layout_marginStart="@dimen/_20sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_expense_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$3,214"
+        android:textColor="@color/colorRed"
+        android:fontFamily="@font/avenir_heavy"
+        android:layout_marginStart="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintBottom_toBottomOf="@+id/view_box_savings"
+        app:layout_constraintStart_toEndOf="@+id/tv_savings_expense_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_total_spend_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:textColor="@color/colorTextColor"
+        android:text="@string/label_savings_today_spend"
+        app:layout_constraintVertical_bias="0.40"
+        app:layout_constraintTop_toTopOf="@id/view_box_savings"
+        app:layout_constraintEnd_toEndOf="@+id/view_box_savings"
+        app:layout_constraintBottom_toBottomOf="@id/view_box_savings"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_savings_total_spend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:textColor="@color/colorTextColor"
+        android:text="$33.81"
+        app:layout_constraintStart_toStartOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintEnd_toEndOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_savings_total_spend_title"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_down_arrow_blue"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_savings_total_spend_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_savings_total_spend"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_savings_70"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.70"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

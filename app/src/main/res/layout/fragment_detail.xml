@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_8sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.fragments.homebottom.DetailFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_heavy"
+        android:padding="@dimen/_8sdp"
+        android:textSize="@dimen/_15sdp"
+        android:text="@string/label_details_balance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_details_balance_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/_8sdp"
+        tools:text="$6,390"
+        android:textSize="@dimen/_15sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:textColor="@color/colorTextColor"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_details_account_info_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_balance_amount"
+        android:padding="@dimen/_8sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:textSize="@dimen/_17sdp"
+        android:textColor="@color/colorTextColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorLayoutBackground"
+        android:text="@string/label_details_account_info_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_details_account_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_account_info_title"
+        android:text="@string/label_details_account_name"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:textColor="@color/colorSmallText"
+        android:fontFamily="@font/avenir_heavy"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_details_account_name_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:textColor="@color/colorSmallText"
+        tools:text="Endows Bank Account"
+        android:paddingStart="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_account_name_title"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_details_account_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_heavy"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:paddingStart="@dimen/_8sdp"
+        android:textColor="@color/colorSmallText"
+        android:text="@string/label_details_account_no"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_account_name_value"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:paddingStart="@dimen/_8sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="126371263178"
+        android:fontFamily="@font/avenir_heavy"
+        android:textColor="@color/colorSmallText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_details_account_number_title"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.fragments.ConfirmAccountFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_roman"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:textColor="@color/colorTextColor"
+        android:text="@string/label_confirm_account_user_alert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_confirm_50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.50"/>
+
+    <View
+        android:id="@+id/view_box"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/gl_confirm_50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_alert"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_confirm_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_account"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintTop_toTopOf="@+id/view_box"
+        android:layout_margin="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="User name"
+        android:fontFamily="@font/avenir_roman"
+        android:textColor="@color/colorTextColor"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toEndOf="@+id/iv_confirm_account"
+        app:layout_constraintTop_toTopOf="@+id/iv_confirm_account"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_light"
+        android:text="@string/label_endows_client"
+        android:layout_marginStart="@dimen/_20sdp"
+        app:layout_constraintStart_toEndOf="@+id/iv_confirm_account"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_user_name"/>
+
+    <View
+        android:id="@+id/view_confirm_account_first_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintEnd_toEndOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_client"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_roman"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="@string/label_confirm_account_sms"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/view_confirm_account_first_divider"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_sms_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="+16476753056"
+        android:textSize="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_roman"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_sms"
+        android:layout_marginStart="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rb_confirm_account_sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="@+id/view_box"
+        app:layout_constraintTop_toTopOf="@+id/tv_confirm_account_sms"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_confirm_account_sms_mobile"/>
+
+    <View
+        android:id="@+id/view_confirm_account_second_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintEnd_toEndOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_sms_mobile"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_roman"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:text="@string/label_confirm_account_sms"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/view_confirm_account_second_divider"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="+16476753056"
+        android:textSize="@dimen/_10sdp"
+        android:fontFamily="@font/avenir_roman"
+        app:layout_constraintStart_toStartOf="@+id/view_box"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_email_title"
+        android:layout_marginStart="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/rb_confirm_account_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="@+id/view_box"
+        app:layout_constraintTop_toTopOf="@+id/tv_confirm_account_email_title"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_confirm_account_email"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_confirm_account_continue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:gravity="center"
+        android:fontFamily="@font/avenir_heavy"
+        android:paddingBottom="@dimen/_8sdp"
+        android:text="@string/label_confirm_account_submit"
+        android:background="@drawable/bg_rounded_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_box"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_grey_button"
+        app:layout_constraintTop_toBottomOf="@+id/tv_confirm_account_continue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:gravity="center"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:text="@string/label_confirm_account_enter_password"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

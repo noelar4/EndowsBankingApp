@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.fragments.transfer.TransferFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/_12sdp"
+        android:textSize="@dimen/_14sdp"
+        android:background="@android:color/white"
+        android:fontFamily="@font/avenir_light"
+        android:text="@string/label_transfer_title"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_transfer_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_transfer_40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_transfer_60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60"/>
+
+    <View
+        android:id="@+id/view_box_transfer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/bg_rounded_white_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_transfer_title"
+        app:layout_constraintBottom_toBottomOf="@+id/gl_transfer_40"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_from_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_roman"
+        android:text="@string/label_transfer_from"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer"
+        app:layout_constraintTop_toTopOf="@+id/view_box_transfer"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_from_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_light"
+        android:text="@string/label_transfer_from_account"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer"
+        app:layout_constraintTop_toBottomOf="@+id/tv_transfer_from_title"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintTop_toTopOf="@+id/gl_transfer_20"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer"
+        app:layout_constraintEnd_toEndOf="@+id/view_box_transfer"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_to_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_16sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_roman"
+        android:text="@string/label_transfer_to"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer"
+        app:layout_constraintTop_toTopOf="@+id/gl_transfer_20"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_to_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_light"
+        android:text="@string/label_transfer_from_account"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer"
+        app:layout_constraintTop_toBottomOf="@+id/tv_transfer_to_title"/>
+
+
+    <View
+        android:id="@+id/view_box_transfer_amount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/_16sdp"
+        android:background="@drawable/bg_rounded_white_box"
+        app:layout_constraintTop_toBottomOf="@+id/gl_transfer_40"
+        app:layout_constraintBottom_toTopOf="@+id/gl_transfer_60"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/colorTextColor"
+        android:fontFamily="@font/avenir_roman"
+        android:text="@string/label_transfer_amount"
+        app:layout_constraintTop_toTopOf="@+id/view_box_transfer_amount"
+        app:layout_constraintStart_toStartOf="@+id/view_box_transfer_amount"
+        app:layout_constraintEnd_toEndOf="@+id/view_box_transfer_amount"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_8sdp"
+        android:fontFamily="@font/avenir_light"
+        android:background="@android:color/white"
+        android:hint="@string/hint_transfer_amount"
+        app:layout_constraintStart_toStartOf="@id/view_box_transfer_amount"
+        app:layout_constraintEnd_toEndOf="@id/view_box_transfer_amount"
+        app:layout_constraintTop_toBottomOf="@+id/tv_transfer_amount"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_transfer_continue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:gravity="center"
+        android:fontFamily="@font/avenir_heavy"
+        android:paddingBottom="@dimen/_8sdp"
+        android:text="@string/label_confirm_account_submit"
+        android:background="@drawable/bg_rounded_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     <string name="label_login">Sign In with Biometric</string>
     <string name="label_remember_me">Remember me</string>
     <string name="hint_login_password">Password</string>
-    <string name="hint_login_account_no">Account no</string>
+    <string name="hint_login_account_no">Card no</string>
     <string name="label_login_title">Sign in to Endows</string>
     <string name="label_app_tag">Your everyday banking \nmade easy!</string>
     <string name="label_login_trouble_signing_in">Trouble Signing in?</string>

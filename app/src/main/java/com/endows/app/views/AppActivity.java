@@ -16,7 +16,7 @@ public class AppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_graph);
+        NavController navController = Navigation.findNavController(this, R.id.app_nav_host);
         NavigationUI.setupActionBarWithNavController(this, navController);
     }
 }

@@ -21,7 +21,7 @@ public class CommonHelper {
         }
         return 0;
     }
-    public static TransactionHistory getTnxhistoryObj(boolean isDebit, boolean isCredit, String from, String to,String amount) {
+    public static TransactionHistory getTransactionHistoryObj(boolean isDebit, boolean isCredit, String from, String to, String amount) {
         TransactionHistory tnxHist = new TransactionHistory();
         if (isDebit) {
             tnxHist.setIsDebit("Y");

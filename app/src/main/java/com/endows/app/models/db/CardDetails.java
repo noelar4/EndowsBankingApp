@@ -9,7 +9,6 @@ public class CardDetails {
     private String expiryDate;
     private String cvv;
     private String pinNumber;
-    private List<TransactionHistory> transactionHistory;
 
     public String getCardNumber() {
         return cardNumber;
@@ -51,14 +50,6 @@ public class CardDetails {
         this.pinNumber = pinNumber;
     }
 
-    public List<TransactionHistory> getTransactionHistory() {
-        return transactionHistory;
-    }
-
-    public void setTransactionHistory(List<TransactionHistory> transactionHistory) {
-        this.transactionHistory = transactionHistory;
-    }
-
     @Override
     public String toString() {
         return "CardDetails{" +
@@ -67,7 +58,6 @@ public class CardDetails {
                 ", expiryDate='" + expiryDate + '\'' +
                 ", cvv='" + cvv + '\'' +
                 ", pinNumber='" + pinNumber + '\'' +
-                ", transactionHistory=" + transactionHistory +
                 '}';
     }
 }

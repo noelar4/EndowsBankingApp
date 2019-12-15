@@ -6,6 +6,8 @@ public class AccountDetails {
     private String accountType;
     private String accountNumber;
     private String accountBalance;
+    private String creditedAmt;
+    private String debitedAmt;
     private List<TransactionHistory> transactionHistory;
 
     public String getAccountType() {
@@ -40,12 +42,30 @@ public class AccountDetails {
         this.transactionHistory = transactionHistory;
     }
 
+    public String getCreditedAmt() {
+        return creditedAmt;
+    }
+
+    public void setCreditedAmt(String creditedAmt) {
+        this.creditedAmt = creditedAmt;
+    }
+
+    public String getDebitedAmt() {
+        return debitedAmt;
+    }
+
+    public void setDebitedAmt(String debitedAmt) {
+        this.debitedAmt = debitedAmt;
+    }
+
     @Override
     public String toString() {
         return "AccountDetails{" +
                 "accountType='" + accountType + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", accountBalance='" + accountBalance + '\'' +
+                ", creditedAmt='" + creditedAmt + '\'' +
+                ", debitedAmt='" + debitedAmt + '\'' +
                 ", transactionHistory=" + transactionHistory +
                 '}';
     }

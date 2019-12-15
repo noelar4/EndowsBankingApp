@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.endows.app.callbacks.FirebaseCallback;
 import com.endows.app.callbacks.LoginCallback;
+import com.endows.app.constants.Constants;
 import com.endows.app.helper.EmailHelper;
 import com.endows.app.helper.SMSHelper;
 import com.endows.app.helper.CommonHelper;
@@ -14,7 +15,7 @@ import com.endows.app.models.db.Customers;
 import com.endows.app.service.FirebaseService;
 import com.endows.app.service.LoginService;
 
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService, Constants.ErrorConstants {
 
     @Override
     public void generateSmsVerificationCode(final LoginCallback callback, String phoneNumber) {
@@ -30,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
                         response.setResponseMsg("Verification code sent and saved in DB successfully");
                         response.setSuccess(true);
                     } else {
-                        response.setResponseMsg("Customer node is empty");
+                        response.setErrResponse(new Errors(E_007_CODE,E_007_MESSAGE,E_007_DESCRIPTION));
                         response.setSuccess(false);
                     }
                     callback.onLoginCallback(response);
@@ -55,7 +56,7 @@ public class LoginServiceImpl implements LoginService {
                     if (custObj != null && password.equals(custObj.getMobileAppPassword())) {
                         response.setSuccess(true);
                     } else {
-                        response.setResponseMsg("Customer node is empty");
+                        response.setErrResponse(new Errors(E_008_CODE,E_008_MESSAGE,E_008_DESCRIPTION));
                         response.setSuccess(false);
                     }
                     callback.onLoginCallback(response);
@@ -70,7 +71,7 @@ public class LoginServiceImpl implements LoginService {
     public void generateEmailVerificationCode(final LoginCallback callback, String emailId, Context context) {
         final String verificationCode = CommonHelper.generateOTP();
         EmailTemplateDetails emailTemplate = new EmailTemplateDetails("verification_code_template.html",emailId,verificationCode,
-                false,true,false);
+                false,true,false,null,null);
         EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
 
 
@@ -84,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
                     response.setResponseMsg("Verification code sent and saved in DB successfully");
                     response.setSuccess(true);
                 } else {
-                    response.setResponseMsg("Customer node is empty");
+                    response.setErrResponse(new Errors(E_009_CODE,E_009_MESSAGE,E_009_DESCRIPTION));
                     response.setSuccess(false);
                 }
                 callback.onLoginCallback(response);
@@ -102,9 +103,15 @@ public class LoginServiceImpl implements LoginService {
             firebaseService.getCustDetailsUsingCustomerId(new FirebaseCallback() {
                 @Override
                 public void onCallbackCustomerDetails(Customers custObj) {
-                    if (custObj != null && code.equals(custObj.getVerificationCode())) {
-                        response.setResponseMsg("Verification code is same");
-                        response.setSuccess(true);
+                    if (custObj != null) {
+                        if (code.equals(custObj.getVerificationCode())) {
+                            response.setResponseMsg("Verification code is same");
+                            response.setSuccess(true);
+                        } else {
+                            response.setSuccess(false);
+                            response.setErrResponse(new Errors(E_010_CODE,E_010_MESSAGE,E_010_DESCRIPTION));
+                        }
+
                     } else {
                         response.setResponseMsg("Customer node is empty");
                         response.setSuccess(false);

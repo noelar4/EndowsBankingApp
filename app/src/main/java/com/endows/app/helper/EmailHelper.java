@@ -50,7 +50,7 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
                     Message.RecipientType.TO,
                     InternetAddress.parse(emailTemplateDetails.getSenderEmailId())
             );
-            message.setSubject(strArgs[1]);
+            message.setSubject("Secured Email From ENDOWS");
             message.setSentDate(new Date());
 
             InputStream inStream = context.getResources().getAssets().open(emailTemplateDetails.getTemplateName());
@@ -71,10 +71,11 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
     }
     private String getReplacedText(String text) {
         if(emailTemplateDetails.isCardTemplate()) {
-            text = text.replace("Account number:", "Account number: 12345567889").replace("secure PIN:", "Pin: 1234")
-                    .replace("Text for Debit.", "").replace("Card Number:", "Card Number: 1234565678900");
+            text = text.replace("Card Number:", "Card Number: "+emailTemplateDetails.getCardDetails().getCardNumber())
+                    .replace("secure PIN:", "Pin: "+emailTemplateDetails.getCardDetails().getPinNumber())
+                    .replace("Text for Debit.", "");
         } else if(emailTemplateDetails.isOtpTemplate()) {
-            text = text.replace("ENTER OTP HERE","Your verification code is ");
+            text = text.replace("ENTER OTP HERE","Your verification code is "+emailTemplateDetails.getVerificationCode());
         } else if(emailTemplateDetails.isTransactionTemplate()) {
             //TO-DO
         }

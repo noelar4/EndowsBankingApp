@@ -3,7 +3,6 @@ package com.endows.app.service;
 import android.content.Context;
 
 import com.endows.app.callbacks.LoginCallback;
-import com.endows.app.models.app.LoginResponse;
 
 public interface LoginService {
     // Sign in page

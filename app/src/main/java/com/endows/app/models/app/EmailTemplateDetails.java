@@ -1,5 +1,8 @@
 package com.endows.app.models.app;
 
+import com.endows.app.models.db.CardDetails;
+import com.endows.app.models.db.TransactionHistory;
+
 public class EmailTemplateDetails {
     private String templateName;
     private String senderEmailId;
@@ -7,14 +10,19 @@ public class EmailTemplateDetails {
     private boolean isCardTemplate;
     private boolean isOtpTemplate;
     private boolean isTransactionTemplate;
+    private CardDetails cardDetails;
+    private TransactionHistory transactionHistory;
 
-    public EmailTemplateDetails(String templateName, String senderEmailId, String verificationCode, boolean isCardTemplate, boolean isOtpTemplate, boolean isTransactionTemplate) {
+    public EmailTemplateDetails(String templateName, String senderEmailId, String verificationCode, boolean isCardTemplate,
+                                boolean isOtpTemplate, boolean isTransactionTemplate, CardDetails cardDetails, TransactionHistory transactionHistory) {
         this.templateName = templateName;
         this.senderEmailId = senderEmailId;
         this.verificationCode = verificationCode;
         this.isCardTemplate = isCardTemplate;
         this.isOtpTemplate = isOtpTemplate;
         this.isTransactionTemplate = isTransactionTemplate;
+        this.cardDetails = cardDetails;
+        this.transactionHistory = transactionHistory;
     }
 
     public String getTemplateName() {
@@ -39,5 +47,27 @@ public class EmailTemplateDetails {
 
     public boolean isTransactionTemplate() {
         return isTransactionTemplate;
+    }
+
+    public CardDetails getCardDetails() {
+        return cardDetails;
+    }
+
+    public TransactionHistory getTransactionHistory() {
+        return transactionHistory;
+    }
+
+    @Override
+    public String toString() {
+        return "EmailTemplateDetails{" +
+                "templateName='" + templateName + '\'' +
+                ", senderEmailId='" + senderEmailId + '\'' +
+                ", verificationCode='" + verificationCode + '\'' +
+                ", isCardTemplate=" + isCardTemplate +
+                ", isOtpTemplate=" + isOtpTemplate +
+                ", isTransactionTemplate=" + isTransactionTemplate +
+                ", cardDetails=" + cardDetails +
+                ", transactionHistory=" + transactionHistory +
+                '}';
     }
 }

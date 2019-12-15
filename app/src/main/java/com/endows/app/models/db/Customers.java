@@ -13,6 +13,7 @@ public class Customers {
     private String credited_amount;
     private String debited_amount;
     private String emailId;
+    private CreditCardDetails creditCardDetails;
     private List<AccountDetails> accountDetails;
     private List<CardDetails> cardDetails;
     private List<BeneficiaryDetail> beneficiaryDetails;
@@ -148,6 +149,14 @@ public class Customers {
         this.verificationCode = verificationCode;
     }
 
+    public CreditCardDetails getCreditCardDetails() {
+        return creditCardDetails;
+    }
+
+    public void setCreditCardDetails(CreditCardDetails creditCardDetails) {
+        this.creditCardDetails = creditCardDetails;
+    }
+
     @Override
     public String toString() {
         return "Customers{" +
@@ -161,6 +170,7 @@ public class Customers {
                 ", credited_amount='" + credited_amount + '\'' +
                 ", debited_amount='" + debited_amount + '\'' +
                 ", emailId='" + emailId + '\'' +
+                ", creditCardDetails=" + creditCardDetails +
                 ", accountDetails=" + accountDetails +
                 ", cardDetails=" + cardDetails +
                 ", beneficiaryDetails=" + beneficiaryDetails +

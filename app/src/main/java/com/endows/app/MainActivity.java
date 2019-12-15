@@ -23,16 +23,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-        AssetManager assetManager = getApplicationContext().getResources().getAssets();
-        try {
-            InputStream inputStream = assetManager.open("credit_email_template.html");
-            byte[] b = new byte[inputStream.available()];
-            inputStream.read(b);
-            String htmlMsg = new String(b);
-            new EmailHelper(this).execute("vibin2joby@gmail.com");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
 
 
 

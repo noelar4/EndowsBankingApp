@@ -45,4 +45,25 @@ public class CommonHelper {
 
         return tnxHist;
     }
+    public static boolean sendTransactionEmailToCustomer(Context context,List<CardDetails> cardDetailsLst,String firstName,String tnxAmt,String emailId,int cardtype,boolean isDebit) {
+        //Add a transaction history
+        TransactionHistory transHist = null;
+        if(isDebit) {
+            transHist = CommonHelper.getTransactionHistoryObj(true, false, "", firstName, tnxAmt);
+        } else {
+            transHist = CommonHelper.getTransactionHistoryObj(false, true, "", firstName, tnxAmt);
+        }
+
+        for(CardDetails card : cardDetailsLst) {
+            if(cardtype == (card.getCardType())) {
+                //Send a transaction email to the customer
+                EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html",emailId,null,
+                        false,false,true,false,card,transHist);
+                EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
+                emailHelper.execute("");
+                return true;
+            }
+        }
+        return false;
+    }
 }

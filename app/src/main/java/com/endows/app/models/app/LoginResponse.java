@@ -1,9 +1,12 @@
 package com.endows.app.models.app;
 
+import com.endows.app.models.db.Customers;
+
 public class LoginResponse {
     private boolean isSuccess;
     private String responseMsg;
     private Errors errResponse;
+    private Customers customerObj;
 
     public boolean isSuccess() {
         return isSuccess;
@@ -29,12 +32,21 @@ public class LoginResponse {
         this.errResponse = errResponse;
     }
 
+    public Customers getCustomerObj() {
+        return customerObj;
+    }
+
+    public void setCustomerObj(Customers customerObj) {
+        this.customerObj = customerObj;
+    }
+
     @Override
     public String toString() {
         return "LoginResponse{" +
                 "isSuccess=" + isSuccess +
                 ", responseMsg='" + responseMsg + '\'' +
                 ", errResponse=" + errResponse +
+                ", customerObj=" + customerObj +
                 '}';
     }
 }

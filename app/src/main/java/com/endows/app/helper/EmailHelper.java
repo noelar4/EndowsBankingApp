@@ -77,7 +77,10 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
         } else if(emailTemplateDetails.isOtpTemplate()) {
             text = text.replace("ENTER OTP HERE","Your verification code is "+emailTemplateDetails.getVerificationCode());
         } else if(emailTemplateDetails.isTransactionTemplate()) {
-            //TO-DO
+            String transactionStr = ("Y".equalsIgnoreCase(emailTemplateDetails.getTransactionHistory().getIsCredit()))?" Credited":" Debited";
+            text = text.replace("From Account Number :","Card Number :"+emailTemplateDetails.getCardDetails().getCardNumber())
+                    .replace("Transaction Amount : (Credit/Debit)","Transaction Amount :" + emailTemplateDetails.getTransactionHistory().getAmount() + transactionStr)
+            .replace("Date and time of The transaction :","Time stamp : "+emailTemplateDetails.getTransactionHistory().getTimestamp());
         }
         return text;
     }

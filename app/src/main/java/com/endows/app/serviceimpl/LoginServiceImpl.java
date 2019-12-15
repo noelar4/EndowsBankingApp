@@ -71,7 +71,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
     public void generateEmailVerificationCode(final LoginCallback callback, String emailId, Context context) {
         final String verificationCode = CommonHelper.generateOTP();
         EmailTemplateDetails emailTemplate = new EmailTemplateDetails("verification_code_template.html",emailId,verificationCode,
-                false,true,false,null,null);
+                false,true,false,false,null,null);
         EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
 
 

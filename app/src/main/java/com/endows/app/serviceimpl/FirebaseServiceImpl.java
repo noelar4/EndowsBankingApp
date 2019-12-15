@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,14 +44,20 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
     }
 
     @Override
-    public void getCustDetailsUsingCustomerId(final FirebaseCallback firebaseCallback, String customerId) {
+    public void getCustDetailsUsingCustomerId(final FirebaseCallback firebaseCallback, final String customerId) {
         try {
+            final Map<String, Customers> custMap = new HashMap<>();
             myRef.child("Customers").child(customerId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-                    Customers custObj = gson.fromJson(snapshot.getValue().toString(), Customers.class);
-                    firebaseCallback.onCallbackCustomerDetails(custObj);
+                    try {
+                        Customers customerObj = snapshot.getValue(Customers.class);
+                        custMap.put(customerObj.getCustomerId(), customerObj);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    firebaseCallback.onCallbackCustomerDetails(custMap.get(customerId));
                 }
 
                 @Override
@@ -72,11 +77,14 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
 
                     for (DataSnapshot snap : snapshot.getChildren()) {
-                        Customers cust = gson.fromJson(snap.getValue().toString(), Customers.class);
-                        custMap.put(snap.getKey(), cust);
+                        try {
+                            Customers customerObj = snap.getValue(Customers.class);
+                            custMap.put(customerObj.getCustomerId(), customerObj);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     for (String keys : custMap.keySet()) {
@@ -108,11 +116,13 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-
                     for (DataSnapshot snap : snapshot.getChildren()) {
-                        Customers cust = gson.fromJson(snap.getValue().toString(), Customers.class);
-                        custMap.put(snap.getKey(), cust);
+                        try {
+                            Customers customerObj = snap.getValue(Customers.class);
+                            custMap.put(customerObj.getCustomerId(), customerObj);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     for (String keys : custMap.keySet()) {
@@ -140,11 +150,13 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-
                     for (DataSnapshot snap : snapshot.getChildren()) {
-                        Customers cust = gson.fromJson(snap.getValue().toString(), Customers.class);
-                        custMap.put(snap.getKey(), cust);
+                        try {
+                            Customers customerObj = snap.getValue(Customers.class);
+                            custMap.put(customerObj.getCustomerId(), customerObj);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     for (String keys : custMap.keySet()) {
@@ -190,20 +202,19 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
     }
 
     @Override
-    public void addNewTransactionForCreditCard(final Context context,final String custId, final String payAmt, final TransactionHistory transHist) {
+    public void addNewTransactionForCreditCard(final Context context, final String custId, final String payAmt, final TransactionHistory transHist) {
         try {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-                    Customers customerObj = gson.fromJson(snapshot.getValue().toString(), Customers.class);
+                    Customers customerObj = snapshot.getValue(Customers.class);
 
                     // If the credit card details node is empty initialize it
-                    if(customerObj.getCreditCardDetails() == null) {
+                    if (customerObj.getCreditCardDetails() == null) {
                         customerObj.setCreditCardDetails(new CreditCardDetails());
                     }
                     //Add the amount debited from credit card
-                    if(customerObj.getCreditCardDetails().getDebitedAmt() != null && !customerObj.getCreditCardDetails().getDebitedAmt().isEmpty()) {
+                    if (customerObj.getCreditCardDetails().getDebitedAmt() != null && !customerObj.getCreditCardDetails().getDebitedAmt().isEmpty()) {
                         int debitedAmt = CommonHelper.getStringAsInt(customerObj.getCreditCardDetails().getDebitedAmt()) + CommonHelper.getStringAsInt(payAmt);
                         customerObj.getCreditCardDetails().setDebitedAmt(String.valueOf(debitedAmt));
                     } else {
@@ -214,7 +225,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     // card type = 2 --> debit card
 
                     //Add a new transaction record in the history section
-                    if ( customerObj.getCreditCardDetails().getTransactionHistory() != null) {
+                    if (customerObj.getCreditCardDetails().getTransactionHistory() != null) {
                         customerObj.getCreditCardDetails().getTransactionHistory().add(transHist);
                     } else {
                         List<TransactionHistory> transList = new ArrayList<>();
@@ -228,10 +239,14 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Send a transaction email to the customer
-                    EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html",customerObj.getEmailId(),null,
-                            false,false,true,null,transHist);
-                    EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
-                    emailHelper.execute("");
+                    for(CardDetails creditCard:customerObj.getCardDetails()) {
+                        if(1 == creditCard.getCardType()){
+                            EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
+                                    false, false, true, false,creditCard, transHist);
+                            EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
+                            emailHelper.execute("");
+                        }
+                    }
                 }
 
                 @Override
@@ -250,23 +265,22 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-                    Customers customerObj = gson.fromJson(snapshot.getValue().toString(), Customers.class);
+                    Customers customerObj = snapshot.getValue(Customers.class);
 
                     // account type = 1 --> chequing
                     // account type = 2 --> savings
                     for (AccountDetails acctDetails : customerObj.getAccountDetails()) {
                         if (acctDetails.getAccountType().equalsIgnoreCase(accountType)) {
                             //Add the credited/debited amount in DB
-                            if(isDebited) {
-                                if(acctDetails.getDebitedAmt() != null && !acctDetails.getDebitedAmt().isEmpty()) {
+                            if (isDebited) {
+                                if (acctDetails.getDebitedAmt() != null && !acctDetails.getDebitedAmt().isEmpty()) {
                                     int debitedAmt = CommonHelper.getStringAsInt(acctDetails.getDebitedAmt()) + CommonHelper.getStringAsInt(tnxAmt);
                                     acctDetails.setDebitedAmt(String.valueOf(debitedAmt));
                                 } else {
                                     acctDetails.setDebitedAmt(tnxAmt);
                                 }
                             } else {
-                                if(acctDetails.getCreditedAmt() != null && !acctDetails.getCreditedAmt().isEmpty()) {
+                                if (acctDetails.getCreditedAmt() != null && !acctDetails.getCreditedAmt().isEmpty()) {
                                     int creditedAmt = CommonHelper.getStringAsInt(acctDetails.getCreditedAmt()) + CommonHelper.getStringAsInt(tnxAmt);
                                     acctDetails.setDebitedAmt(String.valueOf(creditedAmt));
                                 } else {
@@ -291,10 +305,14 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         myRef.updateChildren(updateMap);
 
                         //Send a transaction email to the customer
-                        EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html",customerObj.getEmailId(),null,
-                                false,false,true,null,transHist);
-                        EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
-                        emailHelper.execute("");
+                        for(CardDetails debitCard:customerObj.getCardDetails()) {
+                            if(2 == debitCard.getCardType()){
+                                EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
+                                        false, false, true, false,debitCard, transHist);
+                                EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
+                                emailHelper.execute("");
+                            }
+                        }
                     }
                 }
 
@@ -317,8 +335,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-                    Gson gson = new Gson();
-                    Customers customerObj = gson.fromJson(snapshot.getValue().toString(), Customers.class);
+                    Customers customerObj = snapshot.getValue(Customers.class);
 
                     // Add the payee to the benefeciary_details node
                     if (customerObj.getBeneficiaryDetails() != null) {
@@ -346,16 +363,15 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
     }
 
     @Override
-    public void makePaymentForCreditCard(final Context context,final FirebaseCallback firebaseCallback, String custId, final String payAmount) {
+    public void makePaymentForCreditCard(final Context context, final FirebaseCallback firebaseCallback, String custId, final String payAmount) {
         try {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Gson gson = new Gson();
-                    Customers customerObj = gson.fromJson(dataSnapshot.getValue().toString(), Customers.class);
-                    if(customerObj.getCreditCardDetails() != null) {
+                    Customers customerObj = dataSnapshot.getValue(Customers.class);
+                    if (customerObj.getCreditCardDetails() != null) {
                         // If the credit amount is present previously add the new transaction to the existing amount
-                        if(customerObj.getCreditCardDetails().getCreditedAmt() != null && !customerObj.getCreditCardDetails().getCreditedAmt().isEmpty()) {
+                        if (customerObj.getCreditCardDetails().getCreditedAmt() != null && !customerObj.getCreditCardDetails().getCreditedAmt().isEmpty()) {
                             int creditedAmt = CommonHelper.getStringAsInt(customerObj.getCreditCardDetails().getCreditedAmt());
                             creditedAmt += CommonHelper.getStringAsInt(payAmount);
                             //Add the credited amount
@@ -378,13 +394,18 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Add a transaction history
-                    TransactionHistory transHist = CommonHelper.getTransactionHistoryObj(true,false,"",customerObj.getFirstName(),payAmount);
+                    TransactionHistory transHist = CommonHelper.getTransactionHistoryObj(true, false, "", customerObj.getFirstName(), payAmount);
 
-                    //Send a transaction email to the customer
-                    EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html",customerObj.getEmailId(),null,
-                            false,false,true,null,transHist);
-                    EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
-                    emailHelper.execute("");
+                    for (CardDetails creditCard : customerObj.getCardDetails()) {
+                        if (1 == (creditCard.getCardType())) {
+                            //Send a transaction email to the customer
+                            EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
+                                    false, false, true, false, creditCard, transHist);
+                            EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
+                            emailHelper.execute("");
+                        }
+                    }
+
                     firebaseCallback.onCallbackCustomerDetails(customerObj);
                 }
 

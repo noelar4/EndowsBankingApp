@@ -239,13 +239,9 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Send a transaction email to the customer
-                    for(CardDetails creditCard:customerObj.getCardDetails()) {
-                        if(1 == creditCard.getCardType()){
-                            EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
-                                    false, false, true, false,creditCard, transHist);
-                            EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
-                            emailHelper.execute("");
-                        }
+                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),payAmt,customerObj.getEmailId(),1,true);
+                    if(!isEmailSent) {
+                        System.out.println("Alert !!!!! Email not sent for the transaction");
                     }
                 }
 
@@ -305,13 +301,9 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         myRef.updateChildren(updateMap);
 
                         //Send a transaction email to the customer
-                        for(CardDetails debitCard:customerObj.getCardDetails()) {
-                            if(2 == debitCard.getCardType()){
-                                EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
-                                        false, false, true, false,debitCard, transHist);
-                                EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
-                                emailHelper.execute("");
-                            }
+                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),tnxAmt,customerObj.getEmailId(),2,isDebited);
+                        if(!isEmailSent) {
+                            System.out.println("Alert !!!!! Email not sent for the transaction");
                         }
                     }
                 }
@@ -393,17 +385,10 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                     myRef.updateChildren(updateMap);
 
-                    //Add a transaction history
-                    TransactionHistory transHist = CommonHelper.getTransactionHistoryObj(true, false, "", customerObj.getFirstName(), payAmount);
-
-                    for (CardDetails creditCard : customerObj.getCardDetails()) {
-                        if (1 == (creditCard.getCardType())) {
-                            //Send a transaction email to the customer
-                            EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html", customerObj.getEmailId(), null,
-                                    false, false, true, false, creditCard, transHist);
-                            EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
-                            emailHelper.execute("");
-                        }
+                    //Send a transaction email to the customer
+                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),payAmount,customerObj.getEmailId(),1,false);
+                    if(!isEmailSent) {
+                        System.out.println("Alert !!!!! Email not sent for the transaction");
                     }
 
                     firebaseCallback.onCallbackCustomerDetails(customerObj);

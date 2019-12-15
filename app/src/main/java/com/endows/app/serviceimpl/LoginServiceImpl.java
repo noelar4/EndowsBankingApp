@@ -29,6 +29,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                     if (custObj != null) {
                         firebaseService.saveVerificationCode(custObj.getCustomerId(), otp);
                         response.setResponseMsg("Verification code sent and saved in DB successfully");
+                        response.setCustomerObj(custObj);
                         response.setSuccess(true);
                     } else {
                         response.setErrResponse(new Errors(E_007_CODE,E_007_MESSAGE,E_007_DESCRIPTION));
@@ -55,6 +56,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                 public void onCallbackCustomerDetails(Customers custObj) {
                     if (custObj != null && password.equals(custObj.getMobileAppPassword())) {
                         response.setSuccess(true);
+                        response.setCustomerObj(custObj);
                     } else {
                         response.setErrResponse(new Errors(E_008_CODE,E_008_MESSAGE,E_008_DESCRIPTION));
                         response.setSuccess(false);
@@ -84,6 +86,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                     firebaseService.saveVerificationCode(custObj.getCustomerId(), verificationCode);
                     response.setResponseMsg("Verification code sent and saved in DB successfully");
                     response.setSuccess(true);
+                    response.setCustomerObj(custObj);
                 } else {
                     response.setErrResponse(new Errors(E_009_CODE,E_009_MESSAGE,E_009_DESCRIPTION));
                     response.setSuccess(false);
@@ -107,6 +110,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                         if (code.equals(custObj.getVerificationCode())) {
                             response.setResponseMsg("Verification code is same");
                             response.setSuccess(true);
+                            response.setCustomerObj(custObj);
                         } else {
                             response.setSuccess(false);
                             response.setErrResponse(new Errors(E_010_CODE,E_010_MESSAGE,E_010_DESCRIPTION));

@@ -11,7 +11,7 @@
         android:id="@+id/view_debit_card"
         android:layout_width="0dp"
         android:layout_height="@dimen/_180sdp"
-        android:background="@drawable/img_card"
+        android:background="@drawable/img_credit_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -48,8 +48,8 @@
         android:layout_height="@dimen/_12sdp"
         android:src="@drawable/img_card_visa"
         app:layout_constraintTop_toTopOf="@+id/tv_chequing_valid_thru_title"
-        app:layout_constraintEnd_toEndOf="@+id/view_debit_card"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_chequing_valid_thru_title"/>
+        app:layout_constraintBottom_toBottomOf="@id/tv_chequing_valid_thru_title"
+        app:layout_constraintEnd_toEndOf="@id/view_debit_card" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_16sdp"
         android:fontFamily="@font/avenir_heavy"
-        android:text="@string/label_chequing"
+        android:text="@string/label_credit_card"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="@+id/view_debit_card"
         app:layout_constraintTop_toTopOf="@+id/iv_card_logo" />
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_heavy"
-        android:text="@string/label_savings_balance"
+        android:text="@string/label_credti_card_balance"
         android:textColor="@android:color/white"
         android:textSize="@dimen/_15sdp"
         app:layout_constraintBottom_toBottomOf="@id/view_debit_card"
@@ -87,12 +87,12 @@
         app:layout_constraintVertical_bias="0.30" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_balance"
+        android:id="@+id/tv_credit_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_black"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/_30sdp"
+        android:textSize="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_4sdp"
         app:layout_constraintBottom_toBottomOf="@id/view_debit_card"
         app:layout_constraintEnd_toEndOf="@id/view_debit_card"
@@ -101,7 +101,7 @@
         android:text="@string/label_zero_dollar" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_credit_no"
+        android:id="@+id/tv_credit_credit_no"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -111,12 +111,13 @@
         android:fontFamily="@font/avenir_heavy"
         app:layout_constraintEnd_toEndOf="@id/view_debit_card"
         app:layout_constraintStart_toStartOf="@id/view_debit_card"
-        app:layout_constraintTop_toBottomOf="@id/tv_chequing_balance" />
+        app:layout_constraintTop_toBottomOf="@id/tv_credit_balance" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_chequing_valid_thru_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_20sdp"
         android:fontFamily="@font/avenir_heavy"
         android:text="@string/label_validity_thru"
         android:textColor="@android:color/white"
@@ -125,10 +126,10 @@
         app:layout_constraintEnd_toEndOf="@id/view_debit_card"
         app:layout_constraintHorizontal_bias="0.40"
         app:layout_constraintStart_toStartOf="@id/view_debit_card"
-        app:layout_constraintTop_toBottomOf="@+id/tv_chequing_credit_no" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_credit_credit_no" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_valid_thru_value"
+        android:id="@+id/tv_credit_valid_thru_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_4sdp"
@@ -139,61 +140,37 @@
         app:layout_constraintStart_toEndOf="@+id/tv_chequing_valid_thru_title"
         app:layout_constraintTop_toTopOf="@+id/tv_chequing_valid_thru_title" />
 
+
+
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_savings_income_title"
+        android:id="@+id/tv_last_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_heavy"
-        android:drawableStart="@drawable/ic_up_arrow"
-        android:drawablePadding="@dimen/_8sdp"
+        android:gravity="center"
         android:layout_marginTop="@dimen/_4sdp"
-        android:text="@string/label_savings_income"
+        android:text="@string/label_chequing_last_payment"
         android:textColor="@color/colorTextColor"
+        app:layout_constraintEnd_toStartOf="@+id/gl_chequing_50"
         app:layout_constraintStart_toStartOf="@+id/view_debit_card"
         app:layout_constraintTop_toBottomOf="@+id/view_debit_card"
         android:layout_marginStart="@dimen/_20sdp"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_income_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="$3,214"
-        android:textColor="@color/colorGreen"
-        android:fontFamily="@font/avenir_heavy"
-        android:layout_marginStart="@dimen/_8sdp"
-        app:layout_constraintTop_toTopOf="@+id/tv_savings_income_title"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_savings_income_title"
-        app:layout_constraintStart_toEndOf="@+id/tv_savings_income_title"/>
-
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_savings_expense_title"
+        android:id="@+id/tv_credit_card_payment_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_heavy"
-        android:drawablePadding="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_4sdp"
-        android:drawableStart="@drawable/ic_down_arrow"
-        android:text="@string/label_savings_expence"
+        android:text="@string/label_empty"
         android:textColor="@color/colorTextColor"
+        app:layout_constraintEnd_toStartOf="@+id/gl_chequing_50"
         app:layout_constraintStart_toStartOf="@+id/view_debit_card"
-        app:layout_constraintTop_toBottomOf="@+id/tv_savings_income_title"
-        app:layout_constraintBottom_toBottomOf="@+id/view_box_savings"
+        app:layout_constraintTop_toBottomOf="@+id/tv_last_payment"
         android:layout_marginStart="@dimen/_20sdp"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_expense_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="$3,214"
-        android:textColor="@color/colorRed"
-        android:fontFamily="@font/avenir_heavy"
-        android:layout_marginStart="@dimen/_8sdp"
-        app:layout_constraintTop_toTopOf="@+id/tv_savings_expense_title"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_savings_expense_title"
-        app:layout_constraintStart_toEndOf="@+id/tv_savings_expense_title"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
+   <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_chequing_today_spent_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -206,7 +183,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_chequing_today_spent_value"
+        android:id="@+id/tv_credit_today_spent_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_heavy"

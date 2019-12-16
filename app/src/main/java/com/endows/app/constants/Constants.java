@@ -1,6 +1,21 @@
 package com.endows.app.constants;
 
+
 public interface Constants {
+
+    interface BundleKeys {
+        String BUNDLE_CUSTOMER_DETAILS = "customer_details";
+        String BUNDLE_ACCOUNT_DETAILS = "account_details";
+        String BUNDLE_DEBIT_CARD_DETAILS = "debit_card_details";
+        String BUNDLE_CREDIT_CARD_DETAILS = "credit_card_details";
+        String BUNDLE_CARD_DETAILS = "card_details";
+        String BUNDLE_ACCOUNT_TYPE = "account_type";
+    }
+
+    interface Templates {
+        String MONEY_TEMPLATE = "$%s";
+    }
+
     interface ErrorConstants {
         String E_001_CODE = "001";
         String E_001_MESSAGE = "Customer ID not found";
@@ -46,5 +61,15 @@ public interface Constants {
     interface TransactionConstants {
         String CHEQUING_ACCOUNT = "1";
         String SAVINGS_ACCOUNT = "2";
+    }
+
+    interface NavItems {
+        String TRANSFER_BETWEEN = "Transfer b/w accounts";
+        String INTERAC =  "Send an Interac";
+        String PAY_BILL = "Pay Bill";
+        String SETTING = "Settings";
+        String CONTACT_US = "Contact us";
+        String HELP_SUPPORT = "Help & Support";
+        String SIGN_OUT = "Sign out";
     }
 }

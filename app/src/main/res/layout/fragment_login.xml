@@ -53,6 +53,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:fontFamily="@font/avenir_roman"
         android:hint="@string/hint_login_password"
+        android:text="12345"
         android:inputType="textWebPassword"
         app:layout_constraintBottom_toTopOf="@+id/switch_remember_me"
         app:layout_constraintEnd_toEndOf="parent"

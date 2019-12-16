@@ -1,8 +1,11 @@
 package com.endows.app.models.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Customers {
+public class Customers implements Parcelable {
     private String customerId;
     private String firstName;
     private String lastName;
@@ -179,4 +182,65 @@ public class Customers {
                 ", isFirstTimeLogin='" + isFirstTimeLogin + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.customerId);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.address);
+        dest.writeString(this.dob);
+        dest.writeString(this.sinNumber);
+        dest.writeString(this.phoneNumber);
+        dest.writeString(this.credited_amount);
+        dest.writeString(this.debited_amount);
+        dest.writeString(this.emailId);
+        dest.writeParcelable(this.creditCardDetails, flags);
+        dest.writeTypedList(this.accountDetails);
+        dest.writeTypedList(this.cardDetails);
+        dest.writeTypedList(this.beneficiaryDetails);
+        dest.writeString(this.mobileAppPassword);
+        dest.writeString(this.verificationCode);
+        dest.writeString(this.isFirstTimeLogin);
+    }
+
+    public Customers() {
+    }
+
+    protected Customers(Parcel in) {
+        this.customerId = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.address = in.readString();
+        this.dob = in.readString();
+        this.sinNumber = in.readString();
+        this.phoneNumber = in.readString();
+        this.credited_amount = in.readString();
+        this.debited_amount = in.readString();
+        this.emailId = in.readString();
+        this.creditCardDetails = in.readParcelable(CreditCardDetails.class.getClassLoader());
+        this.accountDetails = in.createTypedArrayList(AccountDetails.CREATOR);
+        this.cardDetails = in.createTypedArrayList(CardDetails.CREATOR);
+        this.beneficiaryDetails = in.createTypedArrayList(BeneficiaryDetail.CREATOR);
+        this.mobileAppPassword = in.readString();
+        this.verificationCode = in.readString();
+        this.isFirstTimeLogin = in.readString();
+    }
+
+    public static final Parcelable.Creator<Customers> CREATOR = new Parcelable.Creator<Customers>() {
+        @Override
+        public Customers createFromParcel(Parcel source) {
+            return new Customers(source);
+        }
+
+        @Override
+        public Customers[] newArray(int size) {
+            return new Customers[size];
+        }
+    };
 }

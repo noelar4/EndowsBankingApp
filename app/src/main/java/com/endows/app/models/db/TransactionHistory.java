@@ -1,6 +1,9 @@
 package com.endows.app.models.db;
 
-public class TransactionHistory {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TransactionHistory implements Parcelable {
     private String isDebit;
     private String isCredit;
     private String from;
@@ -67,4 +70,43 @@ public class TransactionHistory {
                 ", timestamp='" + timestamp + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.isDebit);
+        dest.writeString(this.isCredit);
+        dest.writeString(this.from);
+        dest.writeString(this.to);
+        dest.writeString(this.amount);
+        dest.writeString(this.timestamp);
+    }
+
+    public TransactionHistory() {
+    }
+
+    protected TransactionHistory(Parcel in) {
+        this.isDebit = in.readString();
+        this.isCredit = in.readString();
+        this.from = in.readString();
+        this.to = in.readString();
+        this.amount = in.readString();
+        this.timestamp = in.readString();
+    }
+
+    public static final Parcelable.Creator<TransactionHistory> CREATOR = new Parcelable.Creator<TransactionHistory>() {
+        @Override
+        public TransactionHistory createFromParcel(Parcel source) {
+            return new TransactionHistory(source);
+        }
+
+        @Override
+        public TransactionHistory[] newArray(int size) {
+            return new TransactionHistory[size];
+        }
+    };
 }

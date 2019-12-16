@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.endows.app.R;
+import com.endows.app.constants.Constants;
 import com.endows.app.views.fragments.HomeActivity;
 
 import androidx.annotation.NonNull;
@@ -79,6 +80,7 @@ public class LoginFragment extends Fragment {
             public void onChanged(String s) {
                 if (s != null) {
                     edtCardNo.setText(s);
+                    switchRemember.setChecked(true);
                 }
             }
         });
@@ -104,8 +106,11 @@ public class LoginFragment extends Fragment {
 
     private void goToHomeScreen() {
         Intent intent = new Intent(getContext(), HomeActivity.class);
+        intent.putExtra(Constants.BundleKeys.BUNDLE_CUSTOMER_DETAILS, mLoginViewModel.getCustomerDetails());
         startActivity(intent);
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
 

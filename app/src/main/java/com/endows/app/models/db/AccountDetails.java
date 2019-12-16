@@ -1,8 +1,13 @@
 package com.endows.app.models.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.endows.app.common.PagetItem;
+
 import java.util.List;
 
-public class AccountDetails {
+public class AccountDetails implements Parcelable, PagetItem {
     private String accountType;
     private String accountNumber;
     private String accountBalance;
@@ -69,4 +74,43 @@ public class AccountDetails {
                 ", transactionHistory=" + transactionHistory +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.accountType);
+        dest.writeString(this.accountNumber);
+        dest.writeString(this.accountBalance);
+        dest.writeString(this.creditedAmt);
+        dest.writeString(this.debitedAmt);
+        dest.writeTypedList(this.transactionHistory);
+    }
+
+    public AccountDetails() {
+    }
+
+    protected AccountDetails(Parcel in) {
+        this.accountType = in.readString();
+        this.accountNumber = in.readString();
+        this.accountBalance = in.readString();
+        this.creditedAmt = in.readString();
+        this.debitedAmt = in.readString();
+        this.transactionHistory = in.createTypedArrayList(TransactionHistory.CREATOR);
+    }
+
+    public static final Parcelable.Creator<AccountDetails> CREATOR = new Parcelable.Creator<AccountDetails>() {
+        @Override
+        public AccountDetails createFromParcel(Parcel source) {
+            return new AccountDetails(source);
+        }
+
+        @Override
+        public AccountDetails[] newArray(int size) {
+            return new AccountDetails[size];
+        }
+    };
 }

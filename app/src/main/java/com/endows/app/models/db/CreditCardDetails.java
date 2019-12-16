@@ -1,8 +1,11 @@
 package com.endows.app.models.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class CreditCardDetails {
+public class CreditCardDetails implements Parcelable {
     private String creditedAmt;
     private String debitedAmt;
     private String lastPaymentDate;
@@ -49,4 +52,39 @@ public class CreditCardDetails {
                 ", transactionHistory=" + transactionHistory +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.creditedAmt);
+        dest.writeString(this.debitedAmt);
+        dest.writeString(this.lastPaymentDate);
+        dest.writeTypedList(this.transactionHistory);
+    }
+
+    public CreditCardDetails() {
+    }
+
+    protected CreditCardDetails(Parcel in) {
+        this.creditedAmt = in.readString();
+        this.debitedAmt = in.readString();
+        this.lastPaymentDate = in.readString();
+        this.transactionHistory = in.createTypedArrayList(TransactionHistory.CREATOR);
+    }
+
+    public static final Parcelable.Creator<CreditCardDetails> CREATOR = new Parcelable.Creator<CreditCardDetails>() {
+        @Override
+        public CreditCardDetails createFromParcel(Parcel source) {
+            return new CreditCardDetails(source);
+        }
+
+        @Override
+        public CreditCardDetails[] newArray(int size) {
+            return new CreditCardDetails[size];
+        }
+    };
 }

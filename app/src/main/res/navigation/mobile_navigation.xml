@@ -9,12 +9,35 @@
         android:id="@+id/nav_home"
         android:name="com.endows.app.views.fragments.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument android:name="customer_details"
+            app:argType="com.endows.app.models.db.Customers"
+            app:nullable="false"/>
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.endows.app.views.fragments.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/interacFragment"
+        android:name="com.endows.app.views.fragments.interac.InteracFragment"
+        android:label="fragment_interac"
+        tools:layout="@layout/fragment_interac" />
+
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.endows.app.views.fragments.AddContactFragment"
+        android:label="fragment_add_contact"
+        tools:layout="@layout/fragment_add_contact" />
+
+    <fragment
+        android:id="@+id/toFragment"
+        android:name="com.endows.app.views.fragments.to.ToFragment"
+        android:label="fragment_to"
+        tools:layout="@layout/fragment_to" />
+
+    <fragment
+        android:id="@+id/transferFragment"
+        android:name="com.endows.app.views.fragments.transfer.TransferFragment"
+        android:label="fragment_transfer"
+        tools:layout="@layout/fragment_transfer" />
+
 
 </navigation>

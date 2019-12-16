@@ -1,7 +1,8 @@
-package com.endows.app.views.fragments.homebottom.adapters;
+package com.endows.app.views.fragments.home.homebottom.adapters;
 
-import com.endows.app.views.fragments.homebottom.DetailFragment;
-import com.endows.app.views.fragments.homebottom.TransactionFragment;
+import com.endows.app.models.db.Customers;
+import com.endows.app.views.fragments.home.homebottom.details.DetailFragment;
+import com.endows.app.views.fragments.home.homebottom.TransactionFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class BottomViewPagerAdapter extends FragmentPagerAdapter {
 
     private String[] tabs = new String[] {"Transactions", "Details"};
+
+    private Customers mCustomers;
+    private int accountType;
 
     public BottomViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -24,7 +28,7 @@ public class BottomViewPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return new TransactionFragment();
         } else {
-            return new DetailFragment();
+            return DetailFragment.getInstance(mCustomers, accountType);
         }
     }
 
@@ -37,5 +41,15 @@ public class BottomViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabs[position];
+    }
+
+    public void setCustomer(Customers customer) {
+        mCustomers = customer;
+        notifyDataSetChanged();
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
+        notifyDataSetChanged();
     }
 }

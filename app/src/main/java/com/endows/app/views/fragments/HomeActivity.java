@@ -1,35 +1,48 @@
 package com.endows.app.views.fragments;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
+import com.endows.app.R;
+import com.endows.app.constants.Constants;
+import com.endows.app.views.fragments.home.NavigationAdapter;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
-import com.endows.app.R;
-import com.endows.app.views.fragments.home.NavigationAdapter;
-
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Menu;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener {
 
     private DrawerLayout drawer;
 
     private NavigationAdapter navAdapter;
+
+    private NavController navController;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -43,22 +56,45 @@ public class HomeActivity extends AppCompatActivity {
         DividerItemDecoration decoration = new DividerItemDecoration(this, manager.getOrientation());
         rvNavigation.addItemDecoration(decoration);
         navAdapter = new NavigationAdapter();
+        navAdapter.setItemClickListener(this);
         rvNavigation.setAdapter(navAdapter);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.setGraph(navController.getGraph(), getIntent().getExtras());
         NavigationUI.setupActionBarWithNavController(this, navController, drawer);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.bringToFront();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         return true;
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, drawer);
+    }
+
+    @Override
+    public void itemClicked(String item) {
+        if (item.equals(Constants.NavItems.TRANSFER_BETWEEN)) {
+            navController.navigate(R.id.transferFragment);
+        } else if (item.equals(Constants.NavItems.INTERAC)) {
+            navController.navigate(R.id.interacFragment);
+        } else if (item.equals(Constants.NavItems.PAY_BILL)) {
+
+        } else if (item.equals(Constants.NavItems.HELP_SUPPORT)) {
+
+        } else if (item.equals(Constants.NavItems.CONTACT_US)) {
+
+        } else if (item.equals(Constants.NavItems.SETTING)) {
+
+        } else if (item.equals(Constants.NavItems.SIGN_OUT)) {
+            HomeActivity.this.finish();
+        }
+
+        drawer.closeDrawers();
     }
 }

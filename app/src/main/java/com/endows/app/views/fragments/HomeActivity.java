@@ -7,7 +7,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.endows.app.R;
+import com.endows.app.callbacks.TransactionCallback;
+import com.endows.app.models.app.TransactionResponse;
+import com.endows.app.service.TransactionService;
+import com.endows.app.serviceimpl.TransactionServiceImpl;
 import com.endows.app.views.fragments.home.NavigationAdapter;
+import com.google.firebase.FirebaseApp;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -28,7 +33,21 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        FirebaseApp.initializeApp(this);
+
+        TransactionService service = new TransactionServiceImpl();
+        service.addBeneficiary(this, new TransactionCallback() {
+            @Override
+            public void onTransactionCallback(TransactionResponse response) {
+                if(!response.isSuccess()) {
+                    System.out.println(response.getErrResponse());
+                } else {
+                    System.out.println(response.getResponseMsg());
+                }
+            }
+        },"3","178","vibin2joby@gmail.com");
+
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         rvNavigation.setAdapter(navAdapter);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, drawer);
+        NavigationUI.setupActionBarWithNavController(this, navController, drawer);*/
 
     }
 

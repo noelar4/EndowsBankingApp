@@ -87,10 +87,12 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         }
                     }
 
+                    // 1 --> CREDIT CARD
+                    // 2 --> DEBIT CARD
                     for (String keys : custMap.keySet()) {
                         if (custMap.get(keys).getCardDetails() != null) {
                             for (CardDetails cardDetails : custMap.get(keys).getCardDetails()) {
-                                if (debitCardNumber.equalsIgnoreCase(cardDetails.getCardNumber())) {
+                                if (debitCardNumber.equalsIgnoreCase(cardDetails.getCardNumber()) && 2 == cardDetails.getCardType()) {
                                     Customers custObj = custMap.get(keys);
                                     firebaseCallback.onCallbackCustomerDetails(custObj);
                                 }
@@ -239,7 +241,8 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Send a transaction email to the customer
-                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),payAmt,customerObj.getEmailId(),1,true);
+                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
+                            customerObj.getFirstName(),payAmt,customerObj.getEmailId(),1,true);
                     if(!isEmailSent) {
                         System.out.println("Alert !!!!! Email not sent for the transaction");
                     }
@@ -256,7 +259,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
     }
 
     @Override
-    public void updateBalance(final Context context, final boolean isDebited, final String tnxAmt, String custId, final String accountType, final String newBalance, final TransactionHistory transHist) {
+    public void updateBalance(final FirebaseCallback firebaseCallback,final Context context, final boolean isDebited, final String tnxAmt, String custId, final String accountType, final String newBalance, final TransactionHistory transHist) {
         try {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -278,9 +281,9 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                             } else {
                                 if (acctDetails.getCreditedAmt() != null && !acctDetails.getCreditedAmt().isEmpty()) {
                                     int creditedAmt = CommonHelper.getStringAsInt(acctDetails.getCreditedAmt()) + CommonHelper.getStringAsInt(tnxAmt);
-                                    acctDetails.setDebitedAmt(String.valueOf(creditedAmt));
+                                    acctDetails.setCreditedAmt(String.valueOf(creditedAmt));
                                 } else {
-                                    acctDetails.setDebitedAmt(tnxAmt);
+                                    acctDetails.setCreditedAmt(tnxAmt);
                                 }
                             }
                             //Updated the new balance in DB
@@ -299,9 +302,11 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         Map<String, Object> updateMap = new HashMap<>();
                         updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                         myRef.updateChildren(updateMap);
+                        firebaseCallback.onCallbackCustomerDetails(customerObj);
 
                         //Send a transaction email to the customer
-                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),tnxAmt,customerObj.getEmailId(),2,isDebited);
+                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
+                                customerObj.getFirstName(),tnxAmt,customerObj.getEmailId(),2,isDebited);
                         if(!isEmailSent) {
                             System.out.println("Alert !!!!! Email not sent for the transaction");
                         }
@@ -319,7 +324,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
     }
 
     @Override
-    public void addNewPayee(final FirebaseCallback firebaseCallback, String custId, String payeeName, String payeeEmailId) {
+    public void addNewPayee(final Context context, final FirebaseCallback firebaseCallback, String custId, String payeeName, final String payeeEmailId) {
         try {
             final BeneficiaryDetail payeeObj = new BeneficiaryDetail();
             payeeObj.setBeneficiaryEmailId(payeeEmailId);
@@ -341,6 +346,11 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     Map<String, Object> updateMap = new HashMap<>();
                     updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                     myRef.updateChildren(updateMap);
+
+                    EmailTemplateDetails emailTemplate = new EmailTemplateDetails("add_payee.html",payeeEmailId,null,
+                            false,false,false,true,null,null,payeeObj);
+                    EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
+                    emailHelper.execute("");
                     firebaseCallback.onCallbackCustomerDetails(customerObj);
                 }
 
@@ -386,7 +396,8 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Send a transaction email to the customer
-                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),customerObj.getFirstName(),payAmount,customerObj.getEmailId(),1,false);
+                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
+                            customerObj.getFirstName(),payAmount,customerObj.getEmailId(),1,false);
                     if(!isEmailSent) {
                         System.out.println("Alert !!!!! Email not sent for the transaction");
                     }

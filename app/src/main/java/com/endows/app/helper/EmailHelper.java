@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.endows.app.models.app.EmailTemplateDetails;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
@@ -69,18 +70,22 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
         }
         return null;
     }
+
     private String getReplacedText(String text) {
-        if(emailTemplateDetails.isCardTemplate()) {
-            text = text.replace("Card Number:", "Card Number: "+emailTemplateDetails.getCardDetails().getCardNumber())
-                    .replace("secure PIN:", "Pin: "+emailTemplateDetails.getCardDetails().getPinNumber())
+        if (emailTemplateDetails.isCardTemplate()) {
+            text = text.replace("Card Number:", "Card Number: " + emailTemplateDetails.getCardDetails().getCardNumber())
+                    .replace("secure PIN:", "Pin: " + emailTemplateDetails.getCardDetails().getPinNumber())
                     .replace("Text for Debit.", "");
-        } else if(emailTemplateDetails.isOtpTemplate()) {
-            text = text.replace("ENTER OTP HERE","Your verification code is "+emailTemplateDetails.getVerificationCode());
-        } else if(emailTemplateDetails.isTransactionTemplate()) {
-            String transactionStr = ("Y".equalsIgnoreCase(emailTemplateDetails.getTransactionHistory().getIsCredit()))?" Credited":" Debited";
-            text = text.replace("From Account Number :","Card Number :"+emailTemplateDetails.getCardDetails().getCardNumber())
-                    .replace("Transaction Amount : (Credit/Debit)","Transaction Amount :" + emailTemplateDetails.getTransactionHistory().getAmount() + transactionStr)
-            .replace("Date and time of The transaction :","Time stamp : "+emailTemplateDetails.getTransactionHistory().getTimestamp());
+        } else if (emailTemplateDetails.isOtpTemplate()) {
+            text = text.replace("ENTER OTP HERE", "Your verification code is " + emailTemplateDetails.getVerificationCode());
+        } else if (emailTemplateDetails.isTransactionTemplate()) {
+            String transactionStr = ("Y".equalsIgnoreCase(emailTemplateDetails.getTransactionHistory().getIsCredit())) ? " Credited" : " Debited";
+            text = text.replace("From Account Number :", "Card Number :" + emailTemplateDetails.getCardDetails().getCardNumber())
+                    .replace("Transaction Amount : (Credit/Debit)", "Transaction Amount :" + emailTemplateDetails.getTransactionHistory().getAmount() + transactionStr)
+                    .replace("Date and time of The transaction :", "Time stamp : " + emailTemplateDetails.getTransactionHistory().getTimestamp());
+        } else if (emailTemplateDetails.isBeneficiaryTemplate()) {
+            text = text.replace("ACCOUNT_NAME", emailTemplateDetails.getBeneficiaryDetail().getBeneficiaryName())
+                    .replace("TIME_STAMP", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         }
         return text;
     }

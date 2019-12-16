@@ -42,14 +42,23 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                         if (fromAcct.equals("1")) {
                             if (getStringAsInt(chequingBalance) > 0) {
                                 int updatedChequingBal = getStringAsInt(chequingBalance) - getStringAsInt(amount);
-                                int updatedSavingsBal = getStringAsInt(savingsBalance) + getStringAsInt(amount);
+                                final int updatedSavingsBal = getStringAsInt(savingsBalance) + getStringAsInt(amount);
 
                                 //Update the balance in DB
                                 TransactionHistory senderTnxHist = getTransactionHistoryObj(true,false,"","Savings",amount);
-                                TransactionHistory receiverTnxHist = getTransactionHistoryObj(false,true,"Chequing","",amount);
-                                firebaseService.updateBalance(context,true,amount,custId, "1", String.valueOf(updatedChequingBal),senderTnxHist);
-                                firebaseService.updateBalance(context,false,amount,custId, "2", String.valueOf(updatedSavingsBal),receiverTnxHist);
-                                response.setSuccess(true);
+                                final TransactionHistory receiverTnxHist = getTransactionHistoryObj(false,true,"Chequing","",amount);
+                                firebaseService.updateBalance(new FirebaseCallback() {
+                                    @Override
+                                    public void onCallbackCustomerDetails(Customers custObj) {
+                                        firebaseService.updateBalance(new FirebaseCallback() {
+                                            @Override
+                                            public void onCallbackCustomerDetails(Customers custObj) {
+                                                response.setSuccess(true);
+                                                callback.onTransactionCallback(response);
+                                            }
+                                        },context, false, amount, custId, TransactionConstants.SAVINGS_ACCOUNT, String.valueOf(updatedSavingsBal), receiverTnxHist);
+                                    }
+                                },context, true, amount, custId, TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedChequingBal), senderTnxHist);
                             } else {
                                 response.setSuccess(false);
                                 response.setErrResponse(new Errors(ErrorConstants.E_002_CODE, ErrorConstants.E_002_MESSAGE, ErrorConstants.E_002_DESCRIPTION));
@@ -57,15 +66,26 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                         } else {
                             //From savings to chequing
                             if (getStringAsInt(savingsBalance) > 0) {
-                                int updatedSavingsBal = getStringAsInt(savingsBalance) - getStringAsInt(amount);
+                                final int updatedSavingsBal = getStringAsInt(savingsBalance) - getStringAsInt(amount);
                                 int updatedChequingBal = getStringAsInt(chequingBalance) + getStringAsInt(amount);
 
                                 //Update the balance in DB
                                 TransactionHistory senderTnxHist = getTransactionHistoryObj(true,false,"","Chequing",amount);
-                                TransactionHistory receiverTnxHist = getTransactionHistoryObj(false,true,"Savings","",amount);
-                                firebaseService.updateBalance(context,true,amount,custId, TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedChequingBal),senderTnxHist);
-                                firebaseService.updateBalance(context,false,amount,custId, TransactionConstants.SAVINGS_ACCOUNT, String.valueOf(updatedSavingsBal),receiverTnxHist);
-                                response.setSuccess(true);
+                                final TransactionHistory receiverTnxHist = getTransactionHistoryObj(false,true,"Savings","",amount);
+                                firebaseService.updateBalance(new FirebaseCallback() {
+                                    @Override
+                                    public void onCallbackCustomerDetails(Customers custObj) {
+                                        if(custObj != null) {
+                                            firebaseService.updateBalance(new FirebaseCallback() {
+                                                @Override
+                                                public void onCallbackCustomerDetails(Customers custObj) {
+                                                    response.setSuccess(true);
+                                                    callback.onTransactionCallback(response);
+                                                }
+                                            },context, false, amount, custId, TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedSavingsBal), receiverTnxHist);
+                                        }
+                                    }
+                                },context, true, amount, custId, TransactionConstants.SAVINGS_ACCOUNT, String.valueOf(updatedChequingBal), senderTnxHist);
                             } else {
                                 response.setSuccess(false);
                                 response.setErrResponse(new Errors(ErrorConstants.E_003_CODE, ErrorConstants.E_003_MESSAGE, ErrorConstants.E_003_DESCRIPTION));
@@ -77,7 +97,6 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                         response.setErrResponse(new Errors(ErrorConstants.E_001_CODE, ErrorConstants.E_001_MESSAGE, ErrorConstants.E_001_DESCRIPTION));
                         response.setSuccess(false);
                     }
-                    callback.onTransactionCallback(response);
                 }
             }, custId);
         } catch (Exception e) {
@@ -134,7 +153,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
     * 2. Then add the beneficiary to account
     * */
     @Override
-    public void addBeneficiary(final TransactionCallback callback, final String custId, final String payeeName, final String payeeEmailId) {
+    public void addBeneficiary(final Context context,final TransactionCallback callback, final String custId, final String payeeName, final String payeeEmailId) {
         final FirebaseService firebaseService = new FirebaseServiceImpl();
         final TransactionResponse response = new TransactionResponse();
         //Step-1
@@ -143,7 +162,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
             public void onCallbackCustomerDetails(Customers custObj) {
                 //Step-2
                 if(custObj != null) {
-                    firebaseService.addNewPayee(new FirebaseCallback() {
+                    firebaseService.addNewPayee(context,new FirebaseCallback() {
                         @Override
                         public void onCallbackCustomerDetails(Customers custObj) {
                             response.setSuccess(true);
@@ -161,7 +180,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
     }
 
     @Override
-    public void payUtilityBills(final Context context,TransactionCallback callback, final String custId, final String payAmt,boolean isPayFromCredit) {
+    public void payUtilityBills(final Context context,final TransactionCallback callback, final String custId, final String payAmt,boolean isPayFromCredit) {
         final FirebaseService firebaseService = new FirebaseServiceImpl();
         final TransactionResponse response = new TransactionResponse();
 
@@ -174,7 +193,13 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                     for(AccountDetails chequingAcct : custObj.getAccountDetails()) {
                         if(chequingAcct.getAccountType().equals(TransactionConstants.CHEQUING_ACCOUNT)) {
                             TransactionHistory tnxHistObj = getTransactionHistoryObj(true, false, "", "Paying Utility bills", payAmt);
-                            firebaseService.updateBalance(context,true,payAmt,custId,TransactionConstants.CHEQUING_ACCOUNT,chequingAcct.getAccountBalance(),tnxHistObj);
+                            firebaseService.updateBalance(new FirebaseCallback() {
+                                @Override
+                                public void onCallbackCustomerDetails(Customers custObj) {
+                                    response.setSuccess(true);
+                                    callback.onTransactionCallback(response);
+                                }
+                            },context, true, payAmt, custId, TransactionConstants.CHEQUING_ACCOUNT, chequingAcct.getAccountBalance(), tnxHistObj);
                         }
                     }
                 }
@@ -219,9 +244,19 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                     TransactionHistory receiverTnxHist = getTransactionHistoryObj(false,true,senderFirstName,"",amount);
 
                     //Updating the balance of sender
-                    firebaseService.updateBalance(context,true,amount,custId, TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedSenderBal), senderTnxHist);
+                    firebaseService.updateBalance(new FirebaseCallback() {
+                        @Override
+                        public void onCallbackCustomerDetails(Customers custObj) {
+                            response.setSuccess(true);
+                        }
+                    },context, true, amount, custId, TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedSenderBal), senderTnxHist);
                     //Updating the balance of receiver
-                    firebaseService.updateBalance(context,false,amount,custObj.getCustomerId(), TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedReceiverBal), receiverTnxHist);
+                    firebaseService.updateBalance(new FirebaseCallback() {
+                        @Override
+                        public void onCallbackCustomerDetails(Customers custObj) {
+                            response.setSuccess(true);
+                        }
+                    }, context, false, amount, custObj.getCustomerId(), TransactionConstants.CHEQUING_ACCOUNT, String.valueOf(updatedReceiverBal), receiverTnxHist);
                 } else {
                     response.setErrResponse(new Errors(ErrorConstants.E_006_CODE, ErrorConstants.E_006_MESSAGE, ErrorConstants.E_006_DESCRIPTION));
                     response.setSuccess(false);

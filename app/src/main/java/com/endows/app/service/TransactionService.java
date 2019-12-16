@@ -15,4 +15,6 @@ public interface TransactionService {
     void payUtilityBills(Context context,TransactionCallback callback,String custId, String payAmt,boolean isPayFromCredit);
     // Pay credit card bill
     void payCreditCardBill(Context context,TransactionCallback callback,String custId, String payAmt);
+    //Opt out of email
+    void optOutOfEmails(Context context,TransactionCallback callback,String custId);
 }

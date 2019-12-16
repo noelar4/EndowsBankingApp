@@ -31,7 +31,8 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
         final String username = EncryptPasswords.decrypt("v0wTNKXJtZ9rCnVA7KJezo1j/9PfFYms");
         final String password = EncryptPasswords.decrypt("g+tpRVxNs1LTsXa01bcc4w==");
         Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.ssl.trust",  "smtp.gmail.com");
+        //prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
@@ -81,7 +82,7 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
         } else if (emailTemplateDetails.isTransactionTemplate()) {
             String transactionStr = ("Y".equalsIgnoreCase(emailTemplateDetails.getTransactionHistory().getIsCredit())) ? " Credited" : " Debited";
             text = text.replace("From Account Number :", "Card Number :" + emailTemplateDetails.getCardDetails().getCardNumber())
-                    .replace("Transaction Amount : (Credit/Debit)", "Transaction Amount :" + emailTemplateDetails.getTransactionHistory().getAmount() + transactionStr)
+                    .replace("Transaction Amount : (Credit/Debit)", "Transaction Amount : $" + emailTemplateDetails.getTransactionHistory().getAmount() + transactionStr)
                     .replace("Date and time of The transaction :", "Time stamp : " + emailTemplateDetails.getTransactionHistory().getTimestamp());
         } else if (emailTemplateDetails.isBeneficiaryTemplate()) {
             text = text.replace("ACCOUNT_NAME", emailTemplateDetails.getBeneficiaryDetail().getBeneficiaryName())

@@ -21,6 +21,7 @@ public class Customers implements Parcelable {
     private List<CardDetails> cardDetails;
     private List<BeneficiaryDetail> beneficiaryDetails;
     private String mobileAppPassword;
+    private boolean isOptOutEmail;
     private String verificationCode;
     private String isFirstTimeLogin;
 
@@ -160,27 +161,12 @@ public class Customers implements Parcelable {
         this.creditCardDetails = creditCardDetails;
     }
 
-    @Override
-    public String toString() {
-        return "Customers{" +
-                "customerId='" + customerId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", dob='" + dob + '\'' +
-                ", sinNumber='" + sinNumber + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", credited_amount='" + credited_amount + '\'' +
-                ", debited_amount='" + debited_amount + '\'' +
-                ", emailId='" + emailId + '\'' +
-                ", creditCardDetails=" + creditCardDetails +
-                ", accountDetails=" + accountDetails +
-                ", cardDetails=" + cardDetails +
-                ", beneficiaryDetails=" + beneficiaryDetails +
-                ", mobileAppPassword='" + mobileAppPassword + '\'' +
-                ", verificationCode='" + verificationCode + '\'' +
-                ", isFirstTimeLogin='" + isFirstTimeLogin + '\'' +
-                '}';
+    public boolean isOptOutEmail() {
+        return isOptOutEmail;
+    }
+
+    public void setOptOutEmail(boolean optOutEmail) {
+        isOptOutEmail = optOutEmail;
     }
 
     @Override
@@ -207,6 +193,7 @@ public class Customers implements Parcelable {
         dest.writeString(this.mobileAppPassword);
         dest.writeString(this.verificationCode);
         dest.writeString(this.isFirstTimeLogin);
+        dest.writeBoolean(this.isOptOutEmail);
     }
 
     public Customers() {
@@ -230,6 +217,7 @@ public class Customers implements Parcelable {
         this.mobileAppPassword = in.readString();
         this.verificationCode = in.readString();
         this.isFirstTimeLogin = in.readString();
+        this.isOptOutEmail = in.readBoolean();
     }
 
     public static final Parcelable.Creator<Customers> CREATOR = new Parcelable.Creator<Customers>() {
@@ -243,4 +231,28 @@ public class Customers implements Parcelable {
             return new Customers[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Customers{" +
+                "customerId='" + customerId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", dob='" + dob + '\'' +
+                ", sinNumber='" + sinNumber + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", credited_amount='" + credited_amount + '\'' +
+                ", debited_amount='" + debited_amount + '\'' +
+                ", emailId='" + emailId + '\'' +
+                ", creditCardDetails=" + creditCardDetails +
+                ", accountDetails=" + accountDetails +
+                ", cardDetails=" + cardDetails +
+                ", beneficiaryDetails=" + beneficiaryDetails +
+                ", mobileAppPassword='" + mobileAppPassword + '\'' +
+                ", isOptOutEmail=" + isOptOutEmail +
+                ", verificationCode='" + verificationCode + '\'' +
+                ", isFirstTimeLogin='" + isFirstTimeLogin + '\'' +
+                '}';
+    }
 }

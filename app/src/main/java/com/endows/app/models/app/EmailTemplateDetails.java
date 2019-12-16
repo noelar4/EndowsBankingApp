@@ -1,5 +1,6 @@
 package com.endows.app.models.app;
 
+import com.endows.app.models.db.BeneficiaryDetail;
 import com.endows.app.models.db.CardDetails;
 import com.endows.app.models.db.TransactionHistory;
 
@@ -13,10 +14,11 @@ public class EmailTemplateDetails {
     private boolean isBeneficiaryTemplate;
     private CardDetails cardDetails;
     private TransactionHistory transactionHistory;
+    private BeneficiaryDetail beneficiaryDetail;
 
     public EmailTemplateDetails(String templateName, String senderEmailId, String verificationCode, boolean isCardTemplate,
                                 boolean isOtpTemplate, boolean isTransactionTemplate, boolean isBeneficiaryTemplate, CardDetails cardDetails,
-                                TransactionHistory transactionHistory) {
+                                TransactionHistory transactionHistory, BeneficiaryDetail beneficiaryDetail) {
         this.templateName = templateName;
         this.senderEmailId = senderEmailId;
         this.verificationCode = verificationCode;
@@ -26,8 +28,8 @@ public class EmailTemplateDetails {
         this.isBeneficiaryTemplate = isBeneficiaryTemplate;
         this.cardDetails = cardDetails;
         this.transactionHistory = transactionHistory;
+        this.beneficiaryDetail = beneficiaryDetail;
     }
-
 
     public String getTemplateName() {
         return templateName;
@@ -63,5 +65,9 @@ public class EmailTemplateDetails {
 
     public boolean isBeneficiaryTemplate() {
         return isBeneficiaryTemplate;
+    }
+
+    public BeneficiaryDetail getBeneficiaryDetail() {
+        return beneficiaryDetail;
     }
 }

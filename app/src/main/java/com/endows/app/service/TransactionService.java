@@ -10,7 +10,7 @@ public interface TransactionService {
     // Interac
     void interacMoneyTransfer(Context context,TransactionCallback callback,String custId,String receiverEmailId,String amount);
     // Adding Payee
-    void addBeneficiary(TransactionCallback callback,String custId,String payeeName,String payeeEmailId);
+    void addBeneficiary(Context context,TransactionCallback callback,String custId,String payeeName,String payeeEmailId);
     // Pay utility bills
     void payUtilityBills(Context context,TransactionCallback callback,String custId, String payAmt,boolean isPayFromCredit);
     // Pay credit card bill

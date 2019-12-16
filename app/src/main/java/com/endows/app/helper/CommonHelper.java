@@ -57,8 +57,8 @@ public class CommonHelper {
         for(CardDetails card : cardDetailsLst) {
             if(cardtype == (card.getCardType())) {
                 //Send a transaction email to the customer
-                EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction_template.html",emailId,null,
-                        false,false,true,false,card,transHist);
+                EmailTemplateDetails emailTemplate = new EmailTemplateDetails("transaction.html",emailId,null,
+                        false,false,true,false,card,transHist,null);
                 EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
                 emailHelper.execute("");
                 return true;

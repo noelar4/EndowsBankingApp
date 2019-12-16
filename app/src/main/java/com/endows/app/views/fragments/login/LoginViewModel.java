@@ -2,6 +2,7 @@ package com.endows.app.views.fragments.login;
 
 import android.app.Application;
 
+import com.endows.app.EndowsApplication;
 import com.endows.app.callbacks.LoginCallback;
 import com.endows.app.common.BooleanLiveData;
 import com.endows.app.common.StringLiveData;
@@ -81,6 +82,8 @@ public class LoginViewModel extends AndroidViewModel implements LoginCallback {
         if (response.isSuccess()) {
             mCustomerDetails = response.getCustomerObj();
             saveCardDetails();
+            EndowsApplication application = getApplication();
+            application.setCustomers(mCustomerDetails);
             loginIndicator.setValue(true);
         } else {
             errorIndicator.setValue("Login failed");

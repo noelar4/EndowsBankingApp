@@ -13,31 +13,52 @@
         <argument android:name="customer_details"
             app:argType="com.endows.app.models.db.Customers"
             app:nullable="false"/>
+        <action
+            android:id="@+id/action_nav_home_to_interacFragment"
+            app:destination="@id/interacFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_transferFragment"
+            app:destination="@id/transferFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/interacFragment"
         android:name="com.endows.app.views.fragments.interac.InteracFragment"
-        android:label="fragment_interac"
-        tools:layout="@layout/fragment_interac" />
+        android:label="Transfer amount"
+        tools:layout="@layout/fragment_interac">
+        <action
+            android:id="@+id/action_interacFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_interacFragment_to_toFragment"
+            app:destination="@id/toFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addContactFragment"
         android:name="com.endows.app.views.fragments.AddContactFragment"
-        android:label="fragment_add_contact"
+        android:label="Add account"
         tools:layout="@layout/fragment_add_contact" />
 
     <fragment
         android:id="@+id/toFragment"
         android:name="com.endows.app.views.fragments.to.ToFragment"
-        android:label="fragment_to"
-        tools:layout="@layout/fragment_to" />
+        android:label="To"
+        tools:layout="@layout/fragment_to">
+        <action
+            android:id="@+id/action_toFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/transferFragment"
         android:name="com.endows.app.views.fragments.transfer.TransferFragment"
-        android:label="fragment_transfer"
-        tools:layout="@layout/fragment_transfer" />
+        android:label="Move amount"
+        tools:layout="@layout/fragment_transfer">
+        <action
+            android:id="@+id/action_transferFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
 
 </navigation>

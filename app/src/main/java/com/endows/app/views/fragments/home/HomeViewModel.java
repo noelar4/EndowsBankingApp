@@ -1,5 +1,8 @@
 package com.endows.app.views.fragments.home;
 
+import android.app.Application;
+
+import com.endows.app.EndowsApplication;
 import com.endows.app.common.PagetItem;
 import com.endows.app.constants.Constants;
 import com.endows.app.models.app.AccountCardDetails;
@@ -10,20 +13,26 @@ import com.endows.app.models.db.Customers;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<Customers> customerMutableLiveData;
 
     private MutableLiveData<List<PagetItem>> accountsLiveData;
 
-    public HomeViewModel() {
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
         customerMutableLiveData = new MutableLiveData<>();
         accountsLiveData = new MutableLiveData<>();
+        Customers customers = ((EndowsApplication) application).getCustomers();
+        setCustomerDetails(customers);
     }
+
 
     MutableLiveData<Customers> getCustomerMutableLiveData() {
         return customerMutableLiveData;

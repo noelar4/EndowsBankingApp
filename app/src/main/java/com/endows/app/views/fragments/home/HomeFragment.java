@@ -44,9 +44,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        final Customers customers = (Customers) getArguments().get(Constants.BundleKeys.BUNDLE_CUSTOMER_DETAILS);
-        homeViewModel.setCustomerDetails(customers);
-
         vpTopPager = view.findViewById(R.id.view_pager_home_top);
         mTopAdapter = new TopPagerAdapter(getChildFragmentManager());
         vpTopPager.setAdapter(mTopAdapter);
@@ -63,7 +60,6 @@ public class HomeFragment extends Fragment {
             public void onPageSelected(int position) {
                 Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
                 vpBottomPager.setAdapter(mBottomAdapter);
-
             }
         });
 
@@ -72,7 +68,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChanged(List<PagetItem> pagetItems) {
                 mTopAdapter.setAccountDetails(pagetItems);
-                mBottomAdapter.setCustomer(customers);
+                mBottomAdapter.setCustomer(homeViewModel.getCustomerMutableLiveData().getValue());
             }
         });
 

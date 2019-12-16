@@ -1,14 +1,11 @@
-package com.endows.app.views.fragments.transfer;
+package com.endows.app.views.fragments.interac;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.endows.app.EndowsApplication;
-import com.endows.app.callbacks.TransactionCallback;
 import com.endows.app.common.BooleanLiveData;
 import com.endows.app.common.StringLiveData;
 import com.endows.app.constants.Constants;
-import com.endows.app.models.app.TransactionResponse;
 import com.endows.app.models.db.AccountDetails;
 import com.endows.app.models.db.CardDetails;
 import com.endows.app.models.db.Customers;
@@ -20,26 +17,27 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class TransferViewModel extends AndroidViewModel implements TransactionCallback {
+public class InteracViewModel extends AndroidViewModel {
 
-    private static final String TAG = "TransferViewModel";
+    private static final String TAG = "InteracViewModel";
 
     private StringLiveData messageLiveData;
     private StringLiveData chequingLiveData;
     private StringLiveData savingsLiveData;
-    private StringLiveData creditCardLiveData;
-    private BooleanLiveData transferLiveData;
+    private BooleanLiveData interacLiveData;
+
     private TransactionServiceImpl mTransactionServiceImp;
 
-    public TransferViewModel(@NonNull Application application) {
+    public InteracViewModel(@NonNull Application application) {
         super(application);
+
         messageLiveData = new StringLiveData();
         chequingLiveData = new StringLiveData();
         savingsLiveData = new StringLiveData();
-        creditCardLiveData = new StringLiveData();
-        transferLiveData = new BooleanLiveData();
+        interacLiveData = new BooleanLiveData();
 
         mTransactionServiceImp = new TransactionServiceImpl();
+
         setAccounts();
     }
 
@@ -55,46 +53,10 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
         return savingsLiveData;
     }
 
-    StringLiveData getCreditCardLiveData() {
-        return creditCardLiveData;
+    BooleanLiveData getInteracLiveData() {
+        return interacLiveData;
     }
 
-    BooleanLiveData getTransferLiveData() {
-        return transferLiveData;
-    }
-
-    void transferAmount(Object fromAccount, Object toAccount, String amount) {
-
-        if (fromAccount == null) {
-            messageLiveData.setValue("Please select FROM account to do transfer");
-            return;
-        } else if (toAccount == null) {
-            messageLiveData.setValue("Please select TO account to do transfer");
-            return;
-        }
-
-        int from = (int) fromAccount;
-        int to = (int) toAccount;
-        Customers customers = ((EndowsApplication) getApplication()).getCustomers();
-        if (customers == null) {
-            messageLiveData.setValue("Session expired, Please logout and then login again for transaction");
-            return;
-        }
-
-        String customerId = customers.getCustomerId();
-        mTransactionServiceImp.transferBetweenAccounts(getApplication().getApplicationContext(), this, customerId, String.valueOf(from), String.valueOf(to), amount);
-    }
-
-    @Override
-    public void onTransactionCallback(TransactionResponse response) {
-        if (response.isSuccess()) {
-            Log.d(TAG, "-------- onTransactionCallback SUCCESS ----------");
-            transferLiveData.setValue(true);
-        } else {
-            Log.d(TAG, "-------- onTransactionCallback FAILED ----------");
-            transferLiveData.setValue(false);
-        }
-    }
 
     private void setAccounts() {
         Customers customers = ((EndowsApplication) getApplication()).getCustomers();
@@ -122,19 +84,6 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     savingsBuilder.append(balance);
                     savingsLiveData.setValue(savingsBuilder.toString());
-                }
-            }
-
-            List<CardDetails> details = customers.getCardDetails();
-            for (CardDetails card :
-                    details) {
-                if (card.getCardType() == 1) {
-                    int length = card.getCardNumber().length();
-                    String lastFourNo = (card.getCardNumber().subSequence(length - 4, length)).toString();
-                    creditCardBuilder.append(lastFourNo);
-                    creditCardBuilder.append(")");
-                    creditCardLiveData.setValue(creditCardBuilder.toString());
-                    break;
                 }
             }
         }

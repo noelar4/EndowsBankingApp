@@ -79,4 +79,5 @@
     <string name="label_empty">--</string>
     <string name="label_credti_card_balance">Current Outstanding Balance</string>
     <string name="label_creadit_card_number_title">Credit card number</string>
+    <string name="label_transfer_choose">Select account</string>
 </resources>

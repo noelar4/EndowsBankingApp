@@ -1,22 +1,14 @@
 package com.endows.app.views.fragments;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
 import com.endows.app.R;
 import com.endows.app.constants.Constants;
 import com.endows.app.views.fragments.home.NavigationAdapter;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -80,9 +72,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public void itemClicked(String item) {
         if (item.equals(Constants.NavItems.TRANSFER_BETWEEN)) {
-            navController.navigate(R.id.transferFragment);
+            navController.navigate(R.id.action_nav_home_to_transferFragment);
         } else if (item.equals(Constants.NavItems.INTERAC)) {
-            navController.navigate(R.id.interacFragment);
+            navController.navigate(R.id.action_nav_home_to_interacFragment);
         } else if (item.equals(Constants.NavItems.PAY_BILL)) {
 
         } else if (item.equals(Constants.NavItems.HELP_SUPPORT)) {

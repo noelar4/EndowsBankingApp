@@ -10,6 +10,7 @@ import com.endows.app.helper.SMSHelper;
 import com.endows.app.helper.CommonHelper;
 import com.endows.app.models.app.EmailTemplateDetails;
 import com.endows.app.models.app.Errors;
+import com.endows.app.models.app.FirebaseResponse;
 import com.endows.app.models.app.LoginResponse;
 import com.endows.app.models.db.Customers;
 import com.endows.app.service.FirebaseService;
@@ -23,13 +24,13 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         final FirebaseService firebaseService = new FirebaseServiceImpl();
         firebaseService.getCustDetailsUsingPhoneNumber(new FirebaseCallback() {
             @Override
-            public void onCallbackCustomerDetails(Customers custObj) {
+            public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
                 LoginResponse response = new LoginResponse();
                 try {
-                    if (custObj != null) {
-                        firebaseService.saveVerificationCode(custObj.getCustomerId(), otp);
+                    if (firebaseResponse.getCustomerObj() != null) {
+                        firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), otp);
                         response.setResponseMsg("Verification code sent and saved in DB successfully");
-                        response.setCustomerObj(custObj);
+                        response.setCustomerObj(firebaseResponse.getCustomerObj());
                         response.setSuccess(true);
                     } else {
                         response.setErrResponse(new Errors(E_007_CODE,E_007_MESSAGE,E_007_DESCRIPTION));
@@ -53,10 +54,10 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         try {
             firebaseService.getCustDetailsUsingCardNumber(new FirebaseCallback() {
                 @Override
-                public void onCallbackCustomerDetails(Customers custObj) {
-                    if (custObj != null && password.equals(custObj.getMobileAppPassword())) {
+                public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
+                    if (firebaseResponse.getCustomerObj() != null && password.equals(firebaseResponse.getCustomerObj().getMobileAppPassword())) {
                         response.setSuccess(true);
-                        response.setCustomerObj(custObj);
+                        response.setCustomerObj(firebaseResponse.getCustomerObj());
                     } else {
                         response.setErrResponse(new Errors(E_008_CODE,E_008_MESSAGE,E_008_DESCRIPTION));
                         response.setSuccess(false);
@@ -80,13 +81,13 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         final FirebaseService firebaseService = new FirebaseServiceImpl();
         firebaseService.getCustDetailsUsingEmailId(new FirebaseCallback() {
             @Override
-            public void onCallbackCustomerDetails(Customers custObj) {
+            public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
                 LoginResponse response = new LoginResponse();
-                if (custObj != null) {
-                    firebaseService.saveVerificationCode(custObj.getCustomerId(), verificationCode);
+                if (firebaseResponse.getCustomerObj() != null) {
+                    firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), verificationCode);
                     response.setResponseMsg("Verification code sent and saved in DB successfully");
                     response.setSuccess(true);
-                    response.setCustomerObj(custObj);
+                    response.setCustomerObj(firebaseResponse.getCustomerObj());
                 } else {
                     response.setErrResponse(new Errors(E_009_CODE,E_009_MESSAGE,E_009_DESCRIPTION));
                     response.setSuccess(false);
@@ -105,12 +106,12 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         try {
             firebaseService.getCustDetailsUsingCustomerId(new FirebaseCallback() {
                 @Override
-                public void onCallbackCustomerDetails(Customers custObj) {
-                    if (custObj != null) {
-                        if (code.equals(custObj.getVerificationCode())) {
+                public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
+                    if (firebaseResponse.getCustomerObj() != null) {
+                        if (code.equals(firebaseResponse.getCustomerObj().getVerificationCode())) {
                             response.setResponseMsg("Verification code is same");
                             response.setSuccess(true);
-                            response.setCustomerObj(custObj);
+                            response.setCustomerObj(firebaseResponse.getCustomerObj());
                         } else {
                             response.setSuccess(false);
                             response.setErrResponse(new Errors(E_010_CODE,E_010_MESSAGE,E_010_DESCRIPTION));

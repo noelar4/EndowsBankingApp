@@ -50,14 +50,20 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(customerId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     try {
                         Customers customerObj = snapshot.getValue(Customers.class);
                         custMap.put(customerObj.getCustomerId(), customerObj);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    firebaseCallback.onCallbackCustomerDetails(custMap.get(customerId));
+                    if(custMap.get(customerId) != null) {
+                        response.setSuccess(true);
+                        response.setCustomerObj(custMap.get(customerId));
+                    } else {
+                        response.setSuccess(false);
+                    }
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -77,7 +83,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
-
+                    FirebaseResponse response = new FirebaseResponse();
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         try {
                             Customers customerObj = snap.getValue(Customers.class);
@@ -90,11 +96,13 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     // 1 --> CREDIT CARD
                     // 2 --> DEBIT CARD
                     for (String keys : custMap.keySet()) {
-                        if (custMap.get(keys).getCardDetails() != null) {
+                        if (custMap.get(keys)!=null && custMap.get(keys).getCardDetails() != null) {
                             for (CardDetails cardDetails : custMap.get(keys).getCardDetails()) {
                                 if (debitCardNumber.equalsIgnoreCase(cardDetails.getCardNumber()) && 2 == cardDetails.getCardType()) {
                                     Customers custObj = custMap.get(keys);
-                                    firebaseCallback.onCallbackCustomerDetails(custObj);
+                                    response.setSuccess(true);
+                                    response.setCustomerObj(custObj);
+                                    firebaseCallback.onCallbackCustomerDetails(response);
                                 }
                             }
                         }
@@ -118,6 +126,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         try {
                             Customers customerObj = snap.getValue(Customers.class);
@@ -130,7 +139,9 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     for (String keys : custMap.keySet()) {
                         if (phoneNumber.equalsIgnoreCase(custMap.get(keys).getPhoneNumber())) {
                             Customers custObj = custMap.get(keys);
-                            firebaseCallback.onCallbackCustomerDetails(custObj);
+                            response.setSuccess(true);
+                            response.setCustomerObj(custObj);
+                            firebaseCallback.onCallbackCustomerDetails(response);
                         }
                     }
                 }
@@ -152,6 +163,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         try {
                             Customers customerObj = snap.getValue(Customers.class);
@@ -164,9 +176,15 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     for (String keys : custMap.keySet()) {
                         if (emailId.equalsIgnoreCase(custMap.get(keys).getEmailId())) {
                             Customers custObj = custMap.get(keys);
-                            firebaseCallback.onCallbackCustomerDetails(custObj);
+                            response.setSuccess(true);
+                            response.setCustomerObj(custObj);
                         }
                     }
+                    if(!response.isSuccess()) {
+                        response.setErrors(new Errors("","Invalid Email","Invalid Email not Found"));
+                    }
+
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -209,6 +227,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     Customers customerObj = snapshot.getValue(Customers.class);
 
                     // If the credit card details node is empty initialize it
@@ -239,13 +258,19 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     Map<String, Object> updateMap = new HashMap<>();
                     updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                     myRef.updateChildren(updateMap);
+                    response.setSuccess(true);
 
                     //Send a transaction email to the customer
-                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
-                            customerObj.getFirstName(),payAmt,customerObj.getEmailId(),1,true);
-                    if(!isEmailSent) {
-                        System.out.println("Alert !!!!! Email not sent for the transaction");
+                    if(!customerObj.isOptOutEmail()) {
+                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context, customerObj.getCardDetails(),
+                                customerObj.getFirstName(), payAmt, customerObj.getEmailId(), 1, true);
+                        if (!isEmailSent) {
+                            response.setSuccess(false);
+                            response.setCustomerObj(customerObj);
+                            response.setErrors(new Errors("", "Email not sent", "Alert !!!!! Email not sent for the transaction"));
+                        }
                     }
+                    //firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -264,6 +289,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     Customers customerObj = snapshot.getValue(Customers.class);
 
                     // account type = 1 --> chequing
@@ -297,19 +323,25 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                                 transList.add(transHist);
                                 acctDetails.setTransactionHistory(transList);
                             }
+                            //Send a transaction email to the customer
+                            if(!customerObj.isOptOutEmail()) {
+                                boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context, customerObj.getCardDetails(),
+                                        customerObj.getFirstName(), tnxAmt, customerObj.getEmailId(), 2, isDebited);
+                                if (!isEmailSent) {
+                                    response.setSuccess(false);
+                                    response.setCustomerObj(customerObj);
+                                    response.setErrors(new Errors("", "Email not sent", "Alert !!!!! Email not sent for the transaction"));
+                                }
+                            }
                         }
 
                         Map<String, Object> updateMap = new HashMap<>();
                         updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                         myRef.updateChildren(updateMap);
-                        firebaseCallback.onCallbackCustomerDetails(customerObj);
+                        response.setSuccess(true);
+                        response.setCustomerObj(customerObj);
 
-                        //Send a transaction email to the customer
-                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
-                                customerObj.getFirstName(),tnxAmt,customerObj.getEmailId(),2,isDebited);
-                        if(!isEmailSent) {
-                            System.out.println("Alert !!!!! Email not sent for the transaction");
-                        }
+                        firebaseCallback.onCallbackCustomerDetails(response);
                     }
                 }
 
@@ -332,26 +364,35 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     Customers customerObj = snapshot.getValue(Customers.class);
+                    Errors isValidPayee = CommonHelper.isPayeeAdditionValid(customerObj,payeeEmailId);
+                    if( isValidPayee == null) {
+                        // Add the payee to the beneficiary_details node
+                        if (customerObj.getBeneficiaryDetails() != null) {
+                            customerObj.getBeneficiaryDetails().add(payeeObj);
+                        } else {
+                            List<BeneficiaryDetail> payeeLst = new ArrayList<>();
+                            payeeLst.add(payeeObj);
+                            customerObj.setBeneficiaryDetails(payeeLst);
+                        }
 
-                    // Add the payee to the benefeciary_details node
-                    if (customerObj.getBeneficiaryDetails() != null) {
-                        customerObj.getBeneficiaryDetails().add(payeeObj);
+                        Map<String, Object> updateMap = new HashMap<>();
+                        updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
+                        myRef.updateChildren(updateMap);
+                        response.setSuccess(true);
+                        if(!customerObj.isOptOutEmail()) {
+                            EmailTemplateDetails emailTemplate = new EmailTemplateDetails("add_payee.html", customerObj.getEmailId(), null,
+                                    false, false, false, true, null, null, payeeObj);
+                            EmailHelper emailHelper = new EmailHelper(context, emailTemplate);
+                            emailHelper.execute("");
+                        }
                     } else {
-                        List<BeneficiaryDetail> payeeLst = new ArrayList<>();
-                        payeeLst.add(payeeObj);
-                        customerObj.setBeneficiaryDetails(payeeLst);
+                        //Indicating the payee addition is invalid
+                        response.setSuccess(false);
+                        response.setErrors(isValidPayee);
                     }
-
-                    Map<String, Object> updateMap = new HashMap<>();
-                    updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
-                    myRef.updateChildren(updateMap);
-
-                    EmailTemplateDetails emailTemplate = new EmailTemplateDetails("add_payee.html",payeeEmailId,null,
-                            false,false,false,true,null,null,payeeObj);
-                    EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
-                    emailHelper.execute("");
-                    firebaseCallback.onCallbackCustomerDetails(customerObj);
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -370,6 +411,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
             myRef.child("Customers").child(custId).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    FirebaseResponse response = new FirebaseResponse();
                     Customers customerObj = dataSnapshot.getValue(Customers.class);
                     if (customerObj.getCreditCardDetails() != null) {
                         // If the credit amount is present previously add the new transaction to the existing amount
@@ -396,13 +438,16 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                     myRef.updateChildren(updateMap);
 
                     //Send a transaction email to the customer
-                    boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context,customerObj.getCardDetails(),
-                            customerObj.getFirstName(),payAmount,customerObj.getEmailId(),1,false);
-                    if(!isEmailSent) {
-                        System.out.println("Alert !!!!! Email not sent for the transaction");
+                    if(!customerObj.isOptOutEmail()) {
+                        boolean isEmailSent = CommonHelper.sendTransactionEmailToCustomer(context, customerObj.getCardDetails(),
+                                customerObj.getFirstName(), payAmount, customerObj.getEmailId(), 1, false);
+                        if (!isEmailSent) {
+                            response.setSuccess(false);
+                            response.setCustomerObj(customerObj);
+                            response.setErrors(new Errors("", "Email not sent", "Alert !!!!! Email not sent for the transaction"));
+                        }
                     }
-
-                    firebaseCallback.onCallbackCustomerDetails(customerObj);
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -413,5 +458,17 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void optOutofEmails(Context context, FirebaseCallback firebaseCallback, String custId) {
+        FirebaseResponse response = new FirebaseResponse();
+        try {
+            myRef.child("Customers").child(custId).child("isOptOutEmail").setValue(true);
+            response.setSuccess(true);
+        } catch(Exception e) {
+            response.setErrors(new Errors("",e.getMessage(),e.getCause().toString()));
+        }
+        firebaseCallback.onCallbackCustomerDetails(response);
     }
 }

@@ -3,7 +3,10 @@ package com.endows.app.helper;
 import android.content.Context;
 
 import com.endows.app.models.app.EmailTemplateDetails;
+import com.endows.app.models.app.Errors;
+import com.endows.app.models.db.BeneficiaryDetail;
 import com.endows.app.models.db.CardDetails;
+import com.endows.app.models.db.Customers;
 import com.endows.app.models.db.TransactionHistory;
 
 import java.text.SimpleDateFormat;
@@ -65,5 +68,20 @@ public class CommonHelper {
             }
         }
         return false;
+    }
+    public static Errors isPayeeAdditionValid(Customers customerObj,String receiverEmailId) {
+        if(customerObj != null) {
+            if(receiverEmailId.equalsIgnoreCase(customerObj.getEmailId())) {
+                return new Errors("","Invalid Email","Self email addition not valid");
+            }
+            if(customerObj.getBeneficiaryDetails() != null) {
+                for (BeneficiaryDetail beneficiaryDetail : customerObj.getBeneficiaryDetails()) {
+                    if (receiverEmailId.equalsIgnoreCase(beneficiaryDetail.getBeneficiaryEmailId())) {
+                        return new Errors("", "Duplicate Email found", "Email id already exists in the payee list");
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

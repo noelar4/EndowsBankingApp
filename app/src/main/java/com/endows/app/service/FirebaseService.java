@@ -17,4 +17,5 @@ public interface FirebaseService {
     void updateBalance(FirebaseCallback firebaseCallback,Context context,boolean isDebited,String tnxAmt,String custId, String accountType, String newBalance, TransactionHistory transHist);
     void addNewPayee(Context context,FirebaseCallback firebaseCallback,String custId, String payeeName, String payeeEmailId);
     void makePaymentForCreditCard(Context context, final FirebaseCallback firebaseCallback, String custId, String payAmount);
+    void optOutofEmails(Context context, final FirebaseCallback firebaseCallback, String custId);
 }

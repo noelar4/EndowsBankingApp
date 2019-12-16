@@ -1,7 +1,7 @@
 package com.endows.app.callbacks;
 
-import com.endows.app.models.db.Customers;
+import com.endows.app.models.app.FirebaseResponse;
 
 public interface FirebaseCallback {
-    void onCallbackCustomerDetails(Customers custObj);
+    void onCallbackCustomerDetails(FirebaseResponse response);
 }

@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.endows.app.common.PagetItem;
+import com.endows.app.common.RoundedPagerIndicator;
 import com.endows.app.constants.Constants;
 import com.endows.app.models.db.Customers;
 import com.google.android.material.tabs.TabLayout;
 import com.endows.app.R;
 import com.endows.app.views.fragments.home.homebottom.adapters.BottomViewPagerAdapter;
 import com.endows.app.views.fragments.home.hometop.adapter.TopPagerAdapter;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class HomeFragment extends Fragment {
     private TopPagerAdapter mTopAdapter;
     private ViewPager vpBottomPager;
     private BottomViewPagerAdapter mBottomAdapter;
+    private DotsIndicator indicator;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,12 +47,15 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        indicator = view.findViewById(R.id.dots_indicator);
         vpTopPager = view.findViewById(R.id.view_pager_home_top);
         mTopAdapter = new TopPagerAdapter(getChildFragmentManager());
         vpTopPager.setAdapter(mTopAdapter);
+        indicator.setViewPager(vpTopPager);
 
         vpBottomPager = view.findViewById(R.id.view_pager_home_bottom);
         mBottomAdapter = new BottomViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        vpBottomPager.setOffscreenPageLimit(1);
         vpBottomPager.setAdapter(mBottomAdapter);
 
         TabLayout tabLayout = view.findViewById(R.id.home_tab);
@@ -58,11 +64,10 @@ public class HomeFragment extends Fragment {
         vpTopPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
+                homeViewModel.setAccountType(position);
                 vpBottomPager.setAdapter(mBottomAdapter);
             }
         });
-
 
         homeViewModel.getAccountsLiveData().observe(this, new Observer<List<PagetItem>>() {
             @Override
@@ -71,7 +76,5 @@ public class HomeFragment extends Fragment {
                 mBottomAdapter.setCustomer(homeViewModel.getCustomerMutableLiveData().getValue());
             }
         });
-
-
     }
 }

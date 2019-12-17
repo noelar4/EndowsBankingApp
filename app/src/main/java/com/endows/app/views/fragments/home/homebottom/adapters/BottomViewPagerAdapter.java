@@ -2,7 +2,7 @@ package com.endows.app.views.fragments.home.homebottom.adapters;
 
 import com.endows.app.models.db.Customers;
 import com.endows.app.views.fragments.home.homebottom.details.DetailFragment;
-import com.endows.app.views.fragments.home.homebottom.TransactionFragment;
+import com.endows.app.views.fragments.home.homebottom.transaction.TransactionFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +26,7 @@ public class BottomViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new TransactionFragment();
+            return TransactionFragment.getInstance(accountType);
         } else {
             return DetailFragment.getInstance(mCustomers, accountType);
         }

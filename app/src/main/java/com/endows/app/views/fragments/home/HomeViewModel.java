@@ -25,10 +25,13 @@ public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<PagetItem>> accountsLiveData;
 
+    private MutableLiveData<Integer> accountTypeLiveData;
+
     public HomeViewModel(@NonNull Application application) {
         super(application);
         customerMutableLiveData = new MutableLiveData<>();
         accountsLiveData = new MutableLiveData<>();
+        accountTypeLiveData = new MutableLiveData<>();
         Customers customers = ((EndowsApplication) application).getCustomers();
         setCustomerDetails(customers);
     }
@@ -40,6 +43,10 @@ public class HomeViewModel extends AndroidViewModel {
 
     MutableLiveData<List<PagetItem>> getAccountsLiveData() {
         return accountsLiveData;
+    }
+
+    MutableLiveData<Integer> getAccountTypeLiveData() {
+        return accountTypeLiveData;
     }
 
     void setCustomerDetails(Customers customerDetails) {
@@ -79,4 +86,7 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
 
+    void setAccountType(int position) {
+        ((EndowsApplication) getApplication()).setAccountType(position);
+    }
 }

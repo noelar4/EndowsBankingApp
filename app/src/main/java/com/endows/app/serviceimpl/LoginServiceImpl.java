@@ -84,6 +84,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
             public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
                 LoginResponse response = new LoginResponse();
                 if (firebaseResponse.getCustomerObj() != null) {
+                    firebaseResponse.getCustomerObj().setVerificationCode(verificationCode);
                     firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), verificationCode);
                     // Sending email to the customer with the verification code
                     emailHelper.execute("");

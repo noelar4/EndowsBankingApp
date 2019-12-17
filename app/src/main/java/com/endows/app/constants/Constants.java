@@ -11,6 +11,7 @@ public interface Constants {
         String BUNDLE_CARD_DETAILS = "card_details";
         String BUNDLE_ACCOUNT_TYPE = "account_type";
         String BUNDLE_BENEFITIARY_DETAILS = "benefitiary_details";
+        String BUNDLE_EMAIL = "email";
     }
 
     interface Templates {

@@ -59,8 +59,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDetailsViewModel = ViewModelProviders.of(this).get(DetailsViewModel.class);
-        mDetailsViewModel.getCustomerLiveData().setValue((Customers) getArguments().get(Constants.BundleKeys.BUNDLE_CUSTOMER_DETAILS));
-        mDetailsViewModel.getAccountType().setValue(getArguments().getInt(Constants.BundleKeys.BUNDLE_ACCOUNT_TYPE));
+        mDetailsViewModel.updateCustomer((Customers) getArguments().get(Constants.BundleKeys.BUNDLE_CUSTOMER_DETAILS));
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
@@ -98,19 +97,20 @@ public class DetailFragment extends Fragment {
                         }
                     }
                 } else {
-                    CreditCardDetails creditCardDetails = customers.getCreditCardDetails();
-                    String debit = creditCardDetails.getDebitedAmt() == null? "0" : creditCardDetails.getDebitedAmt();
-                    String credit = creditCardDetails.getCreditedAmt() == null? "0" : creditCardDetails.getCreditedAmt();
-                    tvBalance.setText(String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, String.valueOf(Double.valueOf(debit) - Double.valueOf(credit))));
-                    tvAccountNoTitle.setText(R.string.label_creadit_card_number_title);
                     for (CardDetails card:
-                         customers.getCardDetails()) {
+                            customers.getCardDetails()) {
                         if (card.getCardType() == 2) {
                             tvAccountNo.setText(card.getCardNumber());
                         }
                     }
 
-
+                    CreditCardDetails creditCardDetails = customers.getCreditCardDetails();
+                    if (creditCardDetails != null) {
+                        String debit = creditCardDetails.getDebitedAmt() == null? "0" : creditCardDetails.getDebitedAmt();
+                        String credit = creditCardDetails.getCreditedAmt() == null? "0" : creditCardDetails.getCreditedAmt();
+                        tvBalance.setText(String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, String.valueOf(Double.valueOf(debit) - Double.valueOf(credit))));
+                        tvAccountNoTitle.setText(R.string.label_creadit_card_number_title);
+                    }
                 }
 
                 String name = customers.getFirstName() + " " + customers.getLastName();

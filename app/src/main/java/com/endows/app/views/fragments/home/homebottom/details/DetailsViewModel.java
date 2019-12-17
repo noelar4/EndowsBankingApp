@@ -2,6 +2,7 @@ package com.endows.app.views.fragments.home.homebottom.details;
 
 import android.app.Application;
 
+import com.endows.app.EndowsApplication;
 import com.endows.app.models.db.Customers;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ public class DetailsViewModel extends AndroidViewModel {
         super(application);
         customerLiveData = new MutableLiveData<>();
         accountType = new MutableLiveData<>();
+
+
     }
 
     MutableLiveData<Customers> getCustomerLiveData() {
@@ -26,6 +29,11 @@ public class DetailsViewModel extends AndroidViewModel {
 
     MutableLiveData<Integer> getAccountType() {
         return accountType;
+    }
+
+    void updateCustomer(Customers customers) {
+        accountType.setValue(((EndowsApplication) getApplication()).getAccountType());
+        customerLiveData.setValue(customers);
     }
 
 }

@@ -7,7 +7,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_single_transaction_description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_heavy"
         android:padding="@dimen/_8sdp"
@@ -15,6 +15,7 @@
         tools:text="E-Transfer received Noel Abraham Reji"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gl_transaction_70"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -34,6 +35,7 @@
         android:textColor="@color/colorGreyText"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/gl_transaction_70"/>
     
 </androidx.constraintlayout.widget.ConstraintLayout>

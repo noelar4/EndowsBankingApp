@@ -10,4 +10,5 @@
     <color name="colorGolden">#F2B55D</color>
     <color name="colorGreyText">#3C3D40</color>
     <color name="colorSmallText">#161617</color>
+    <color name="colorSelectedDot">#20AAFC</color>
 </resources>

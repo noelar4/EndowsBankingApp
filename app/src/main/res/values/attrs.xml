@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedPagerIndicator">
+        <attr name="selectedRoundColor" format="color"/>
+        <attr name="deselectedRoundColor" format="color"/>
+        <attr name="selectedRoundDrawable" format="reference" />
+        <attr name="deselectedRoundDrawable" format="reference"/>
+        <attr name="indicatorSpacing" format="dimension"/>
+        <attr name="barWidth" format="dimension"/>
+        <attr name="barHeight" format="dimension"/>
+        <attr name="autoScroll" format="boolean"/>
+    </declare-styleable>
+</resources>

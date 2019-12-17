@@ -7,6 +7,7 @@ import com.endows.app.callbacks.TransactionCallback;
 import com.endows.app.common.BooleanLiveData;
 import com.endows.app.common.StringLiveData;
 import com.endows.app.constants.Constants;
+import com.endows.app.helper.PreferenceManager;
 import com.endows.app.models.app.TransactionResponse;
 import com.endows.app.models.db.AccountDetails;
 import com.endows.app.models.db.CardDetails;
@@ -94,14 +95,54 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
         }
     }
 
-    public void doBillPayment(boolean isCreditCard, String amount) {
-        if (amount.length() == 0) {
-            messageLiveData.setValue("Amount can not be empty");
+    public void doBillPayment(Object isCreditCard, String type, String billNo, boolean isRemember, String amount) {
+
+        if (isCreditCard == null) {
+            messageLiveData.setValue("Please select ACCOUNT");
+            return;
         }
+
+        if (type == null) {
+            messageLiveData.setValue("Please select UTILITY TYPE");
+            return;
+        }
+
+
+        if (billNo.length() == 0) {
+            messageLiveData.setValue("BILL NUMBER can not be empty");
+            return;
+        }
+
+        if (amount.length() == 0) {
+            messageLiveData.setValue("AMOUNT can not be empty");
+            return;
+        }
+
+        if (isRemember) {
+            saveType(type, billNo);
+        }
+
+        Customers customers = ((EndowsApplication) getApplication()).getCustomers();
+        if (customers == null) {
+            messageLiveData.setValue("Session expired, Please logout and then login again");
+            return;
+        }
+
+        mTransactionServiceImpl.payUtilityBills(getApplication().getApplicationContext(),
+                this, customers.getCustomerId(), amount, (Boolean) isCreditCard);
     }
 
     @Override
     public void onTransactionCallback(TransactionResponse response) {
+        if (response.isSuccess()) {
+            payStatusLiveData.setValue(true);
+        } else {
+            payStatusLiveData.setValue(false);
+        }
+    }
 
+    private void saveType(String type, String billNo) {
+        PreferenceManager manager = new PreferenceManager(getApplication().getApplicationContext());
+        manager.setPreference(type, billNo);
     }
 }

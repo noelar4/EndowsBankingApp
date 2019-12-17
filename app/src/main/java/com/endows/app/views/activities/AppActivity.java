@@ -1,4 +1,4 @@
-package com.endows.app.views;
+package com.endows.app.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

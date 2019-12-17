@@ -90,4 +90,5 @@
     <string name="label_utility_water">Water</string>
     <string name="label_utility_gas">Gas</string>
     <string name="label_utility_phone">Phone</string>
+    <string name="label_empty_transaction">No transaction</string>
 </resources>

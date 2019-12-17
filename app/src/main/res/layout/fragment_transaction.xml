@@ -15,6 +15,7 @@
         android:drawableEnd="@drawable/ic_search"
         android:textColor="@color/colorTextColor"
         android:text="@string/label_transaction_recent"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

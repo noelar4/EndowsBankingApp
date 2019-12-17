@@ -84,7 +84,12 @@ public class LoginViewModel extends AndroidViewModel implements LoginCallback {
             saveCardDetails();
             EndowsApplication application = getApplication();
             application.setCustomers(mCustomerDetails);
-            loginIndicator.setValue(true);
+            if (mCustomerDetails.getIsFirstTimeLogin().equals("Y")) {
+                loginIndicator.setValue(false);
+            } else {
+                loginIndicator.setValue(true);
+            }
+
         } else {
             errorIndicator.setValue("Login failed");
         }

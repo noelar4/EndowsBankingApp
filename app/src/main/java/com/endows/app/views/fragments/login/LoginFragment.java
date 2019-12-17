@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.endows.app.R;
+import com.endows.app.common.Toast;
 import com.endows.app.constants.Constants;
 import com.endows.app.views.activities.HomeActivity;
 
@@ -32,6 +32,7 @@ public class LoginFragment extends Fragment {
 
     private LoginViewModel mLoginViewModel;
 
+    private NavController controller;
 
     public LoginFragment() {
     }
@@ -52,6 +53,8 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        controller = Navigation.findNavController(view);
+
         edtCardNo = view.findViewById(R.id.edt_login_account_no);
         edtPassword = view.findViewById(R.id.edt_login_password);
         switchRemember = view.findViewById(R.id.switch_remember_me);
@@ -62,7 +65,7 @@ public class LoginFragment extends Fragment {
         mLoginViewModel.getErrorIndicator().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                Toast.makeToast(getContext(), s);
             }
         });
 
@@ -71,6 +74,8 @@ public class LoginFragment extends Fragment {
             public void onChanged(Boolean status) {
                 if (status) {
                     goToHomeScreen();
+                } else {
+                    goToResetPassword();
                 }
             }
         });
@@ -111,6 +116,10 @@ public class LoginFragment extends Fragment {
         if (getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    private void goToResetPassword() {
+        controller.navigate(R.id.action_loginFragment_to_resetPasswordFragment);
     }
 
 

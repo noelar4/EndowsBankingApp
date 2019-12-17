@@ -89,6 +89,7 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
     public void onTransactionCallback(TransactionResponse response) {
         if (response.isSuccess()) {
             Log.d(TAG, "-------- onTransactionCallback SUCCESS ----------");
+            ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
             transferLiveData.setValue(true);
         } else {
             Log.d(TAG, "-------- onTransactionCallback FAILED ----------");

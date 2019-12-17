@@ -141,9 +141,10 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                             Customers custObj = custMap.get(keys);
                             response.setSuccess(true);
                             response.setCustomerObj(custObj);
-                            firebaseCallback.onCallbackCustomerDetails(response);
+                            break;
                         }
                     }
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -214,6 +215,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
         FirebaseResponse response = new FirebaseResponse();
         try {
             myRef.child("Customers").child(custId).child("mobileAppPassword").setValue(password);
+            myRef.child("Customers").child(custId).child("isFirstTimeLogin").setValue("N");
             response.setSuccess(true);
         } catch (Exception e) {
             response.setErrors(new Errors("", e.getMessage(), e.getCause().toString()));

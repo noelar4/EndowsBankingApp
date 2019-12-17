@@ -135,6 +135,7 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
     @Override
     public void onTransactionCallback(TransactionResponse response) {
         if (response.isSuccess()) {
+            ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
             payStatusLiveData.setValue(true);
         } else {
             payStatusLiveData.setValue(false);

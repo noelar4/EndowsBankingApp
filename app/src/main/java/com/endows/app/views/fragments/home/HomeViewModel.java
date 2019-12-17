@@ -32,8 +32,6 @@ public class HomeViewModel extends AndroidViewModel {
         customerMutableLiveData = new MutableLiveData<>();
         accountsLiveData = new MutableLiveData<>();
         accountTypeLiveData = new MutableLiveData<>();
-        Customers customers = ((EndowsApplication) application).getCustomers();
-        setCustomerDetails(customers);
     }
 
 
@@ -49,7 +47,8 @@ public class HomeViewModel extends AndroidViewModel {
         return accountTypeLiveData;
     }
 
-    void setCustomerDetails(Customers customerDetails) {
+    void setCustomerDetails() {
+        Customers customerDetails = ((EndowsApplication) getApplication()).getCustomers();
         customerMutableLiveData.setValue(customerDetails);
         List<PagetItem> pagetItems = new ArrayList<>();
         List<AccountDetails> accountDetails = customerDetails.getAccountDetails();

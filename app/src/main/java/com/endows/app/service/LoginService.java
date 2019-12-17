@@ -3,6 +3,7 @@ package com.endows.app.service;
 import android.content.Context;
 
 import com.endows.app.callbacks.LoginCallback;
+import com.endows.app.models.app.LoginResponse;
 
 public interface LoginService {
     // Sign in page
@@ -14,6 +15,6 @@ public interface LoginService {
     void validateVerificationCode(LoginCallback callback,String code,String custId);
 
     // New Password
-    void saveNewPassword(LoginCallback callback,String custId,String password);
+    LoginResponse saveNewPassword(String custId, String password);
 
 }

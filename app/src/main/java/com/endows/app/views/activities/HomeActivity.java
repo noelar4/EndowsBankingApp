@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationAdapter
         } else if (item.equals(Constants.NavItems.PAY_BILL)) {
             navController.navigate(R.id.payBillFragment);
         } else if (item.equals(Constants.NavItems.HELP_SUPPORT)) {
-
+            navController.navigate(R.id.privacyFragment);
         } else if (item.equals(Constants.NavItems.CONTACT_US)) {
 
         } else if (item.equals(Constants.NavItems.SETTING)) {

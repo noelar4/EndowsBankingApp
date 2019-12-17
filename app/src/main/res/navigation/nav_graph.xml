@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_loginFragment_to_troubleFragment"
             app:destination="@id/troubleFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/troubleFragment"

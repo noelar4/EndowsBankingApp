@@ -67,7 +67,7 @@ public class ResetPasswordFragment extends Fragment {
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.navigate(R.id.loginFragment);
+                controller.navigate(R.id.action_resetPasswordFragment_to_loginFragment);
             }
         });
 
@@ -83,7 +83,7 @@ public class ResetPasswordFragment extends Fragment {
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
                     Toast.makeSuccessToast(getContext(), "User changed their password");
-                    controller.navigate(R.id.loginFragment);
+                    controller.navigate(R.id.action_resetPasswordFragment_to_loginFragment);
                 } else {
 
                 }

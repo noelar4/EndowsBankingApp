@@ -13,7 +13,7 @@ import com.endows.app.serviceimpl.LoginServiceImpl;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class ResetViewModel extends AndroidViewModel implements LoginCallback {
+public class ResetViewModel extends AndroidViewModel {
 
     private StringLiveData messageLiveData;
     private BooleanLiveData resetStatusLiveData;
@@ -50,18 +50,14 @@ public class ResetViewModel extends AndroidViewModel implements LoginCallback {
                 return;
             }
 
-            loginService.saveNewPassword(this, customers.getCustomerId(), password);
-        }
-    }
-
-    @Override
-    public void onLoginCallback(LoginResponse response) {
-        if (response.isSuccess()) {
-            Customers customers = response.getCustomerObj();
-            ((EndowsApplication) getApplication()).setCustomers(customers);
-            resetStatusLiveData.setValue(true);
-        } else {
-            messageLiveData.setValue("Something went wrong, Please try again...");
+           LoginResponse response = loginService.saveNewPassword(customers.getCustomerId(), password);
+            if (response.isSuccess()) {
+                customers = response.getCustomerObj();
+                ((EndowsApplication) getApplication()).setCustomers(customers);
+                resetStatusLiveData.setValue(true);
+            } else {
+                messageLiveData.setValue("Something went wrong, Please try again...");
+            }
         }
     }
 }

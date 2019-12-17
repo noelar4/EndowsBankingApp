@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+    tools:context=".views.fragments.privacy.PrivacyFragment"
+    android:layout_margin="@dimen/_10sdp"
+    android:orientation="vertical">
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+
+        android:elevation="@dimen/_5sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:textColor="@color/colorTextColor"
+                android:textSize="23dp"
+                android:text="Your privacy is important to us." >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="start"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/label_important" ></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:textColor="@color/colorTextColor"
+                android:textSize="23dp"
+                android:text="Global Privacy Notice" >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="start"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/Label_notice" ></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="23dp"
+        android:text="Global Privacy Notice" >
+    </TextView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:textColor="@color/colorTextColor"
+                android:textSize="23dp"
+                android:text="Safeguarding Your Information" >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="start"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/label_protecting_our_clients_personal_business_and_financial_information_and_safeguarding_you_from_fraud_are_among_our_highest_priorities_in_addition_to_our_stringent_privacy_practices_we_employ_a_diverse_range_of_technologies_and_security_mechanisms_to_ensure_the_safety_confidentiality_and_integrity_of_your_information_and_transactions" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_heavy"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="23dp"
+        android:text="Protecting Yourself" >
+    </TextView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:textColor="@color/colorTextColor"
+                android:textSize="23dp"
+                android:text="Take Steps to Increase Your Safety" >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="start"
+                android:textSize="@dimen/_15sdp"
+                android:text="@string/label_protected_protecting_your_information_and_ensuring_the_security_of_your_transactions_are_among_our_highest_priorities_but_you_can_maximize_your_own_online_privacy_and_security_by_being_informed_which_is_often_the_best_defense_against_fraud" ></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="center"
+                android:textColor="@color/colorTextColor"
+                android:textSize="23dp"
+                android:text="What You Can Do" >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:fontFamily="@font/avenir_roman"
+                android:gravity="start"
+                android:textSize="@dimen/_15sdp"
+                android:text="From ATM, account and credit card statements, to insurance records and Online Banking login information, you hold and have access to a great deal of personal, business and financial information." ></TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:fontFamily="@font/avenir_light"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10sdp"
+        android:text="@string/label_we_may_change_this_privacy_notice_from_time_to_time_any_changes_will_be_posted_on_our_website" >
+    </TextView>
+</LinearLayout>
+</ScrollView>

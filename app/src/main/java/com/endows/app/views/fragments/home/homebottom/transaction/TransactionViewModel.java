@@ -9,6 +9,7 @@ import com.endows.app.models.db.Customers;
 import com.endows.app.models.db.TransactionHistory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -51,6 +52,7 @@ public class TransactionViewModel extends AndroidViewModel {
                     if (details.getAccountType().equals(Constants.TransactionConstants.CHEQUING_ACCOUNT)) {
                         histories.clear();
                         histories.addAll(details.getTransactionHistory());
+                        Collections.reverse(histories);
                         historyLiveData.setValue(histories);
                         break;
                     }
@@ -62,6 +64,7 @@ public class TransactionViewModel extends AndroidViewModel {
                     if (details.getAccountType().equals(Constants.TransactionConstants.SAVINGS_ACCOUNT)) {
                         histories.clear();
                         histories.addAll(details.getTransactionHistory());
+                        Collections.reverse(histories);
                         historyLiveData.setValue(histories);
                         break;
                     }
@@ -70,6 +73,7 @@ public class TransactionViewModel extends AndroidViewModel {
                 histories.clear();
                 if (customers.getCreditCardDetails() != null && customers.getCreditCardDetails().getTransactionHistory() != null) {
                     histories.addAll(customers.getCreditCardDetails().getTransactionHistory());
+                    Collections.reverse(histories);
                     historyLiveData.setValue(histories);
                 }
             }

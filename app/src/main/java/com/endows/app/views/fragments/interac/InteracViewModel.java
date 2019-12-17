@@ -101,6 +101,7 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
     @Override
     public void onTransactionCallback(TransactionResponse response) {
         if (response.isSuccess()) {
+            ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
             interacLiveData.setValue(true);
         } else {
             interacLiveData.setValue(false);

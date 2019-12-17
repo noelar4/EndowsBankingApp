@@ -52,7 +52,7 @@ public class EnterOTPFragment extends Fragment {
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controller.navigate(R.id.loginFragment);
+                controller.navigate(R.id.action_enterOTPFragment_to_loginFragment);
             }
         });
 
@@ -77,7 +77,7 @@ public class EnterOTPFragment extends Fragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
-                    controller.navigate(R.id.resetPasswordFragment);
+                    controller.navigate(R.id.action_enterOTPFragment_to_resetPasswordFragment);
                 }
             }
         });

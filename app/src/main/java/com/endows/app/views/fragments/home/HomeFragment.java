@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        homeViewModel.setCustomerDetails();
         indicator = view.findViewById(R.id.dots_indicator);
         vpTopPager = view.findViewById(R.id.view_pager_home_top);
         mTopAdapter = new TopPagerAdapter(getChildFragmentManager());

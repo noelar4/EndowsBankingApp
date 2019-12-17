@@ -341,8 +341,8 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         response.setSuccess(true);
                         response.setCustomerObj(customerObj);
 
-                        firebaseCallback.onCallbackCustomerDetails(response);
                     }
+                    firebaseCallback.onCallbackCustomerDetails(response);
                 }
 
                 @Override
@@ -381,6 +381,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                         updateMap.put("Customers/" + customerObj.getCustomerId(), customerObj);
                         myRef.updateChildren(updateMap);
                         response.setSuccess(true);
+                        response.setCustomerObj(customerObj);
                         if(!customerObj.isOptOutEmail()) {
                             EmailTemplateDetails emailTemplate = new EmailTemplateDetails("add_payee.html", customerObj.getEmailId(), null,
                                     false, false, false, true, null, null, payeeObj);

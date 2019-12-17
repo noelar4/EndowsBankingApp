@@ -75,7 +75,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         final String verificationCode = CommonHelper.generateOTP();
         EmailTemplateDetails emailTemplate = new EmailTemplateDetails("verification_code_template.html",emailId,verificationCode,
                 false,true,false,false,null,null,null);
-        EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
+        final EmailHelper emailHelper = new EmailHelper(context,emailTemplate);
 
 
         final FirebaseService firebaseService = new FirebaseServiceImpl();
@@ -85,6 +85,8 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                 LoginResponse response = new LoginResponse();
                 if (firebaseResponse.getCustomerObj() != null) {
                     firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), verificationCode);
+                    // Sending email to the customer with the verification code
+                    emailHelper.execute("");
                     response.setResponseMsg("Verification code sent and saved in DB successfully");
                     response.setSuccess(true);
                     response.setCustomerObj(firebaseResponse.getCustomerObj());
@@ -95,8 +97,6 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                 callback.onLoginCallback(response);
             }
         },emailId);
-        // Sending email to the customer with the verification code
-        emailHelper.execute("");
     }
 
     @Override

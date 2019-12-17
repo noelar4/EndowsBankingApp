@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.endows.app.R;
+import com.endows.app.common.Toast;
+import com.endows.app.constants.Constants;
+import com.endows.app.models.db.BeneficiaryDetail;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 /**
@@ -29,19 +32,13 @@ public class InteracFragment extends Fragment {
     private AppCompatTextView tvFrom;
     private AppCompatTextView tvTo;
     private AppCompatEditText edtAmount;
-    private AppCompatTextView tvChecking;
-    private AppCompatTextView tvSavings;
-
-    private BottomSheetBehavior behavior;
 
     private InteracViewModel interacViewModel;
-
-    private int selectedItem = 0;
 
     private NavController navController;
 
     public InteracFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -59,27 +56,19 @@ public class InteracFragment extends Fragment {
         tvFrom = view.findViewById(R.id.tv_interac_from_account);
         tvTo = view.findViewById(R.id.tv_interac_to_account);
         edtAmount = view.findViewById(R.id.edt_interac_amount);
-        ConstraintLayout bottomSheet = view.findViewById(R.id.bottom_sheet_interac);
-        tvChecking = view.findViewById(R.id.tv_interac_chequing);
-        tvSavings = view.findViewById(R.id.tv_interac_savings);
 
-        behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setHideable(true);
-        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        setTo();
 
         AppCompatTextView tvContinue = view.findViewById(R.id.tv_interac_continue);
         tvContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (tvTo.getText() == null || edtAmount.getText() == null) return;
 
-            }
-        });
+                String receiverEmailId = tvTo.getText().toString();
+                String amount = edtAmount.getText().toString();
 
-        tvFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedItem = 1;
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                interacViewModel.doInterac(receiverEmailId, amount);
             }
         });
 
@@ -90,45 +79,40 @@ public class InteracFragment extends Fragment {
             }
         });
 
-        tvChecking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                populateDataOnSelectedPart(tvChecking.getText().toString(), 1);
-            }
-        });
-
-        tvSavings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                populateDataOnSelectedPart(tvSavings.getText().toString(), 2);
-            }
-        });
-
         interacViewModel.getChequingLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                tvChecking.setText(s);
+                tvFrom.setText(s);
             }
         });
 
-        interacViewModel.getSavingsLiveData().observe(this, new Observer<String>() {
+        interacViewModel.getInteracLiveData().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(String s) {
-                tvSavings.setText(s);
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeSuccessToast(getContext(), "Transferred Successfully");
+                } else {
+                    Toast.makeFailureToast(getContext(), "Transfer failed");
+                }
+
+                goBackToHomePage();
             }
         });
-
     }
 
-    private void populateDataOnSelectedPart(String accountText, int accountSelected) {
-        if (selectedItem == 1) {
-            tvFrom.setText(accountText);
-            tvFrom.setTag(accountSelected);
-        } else {
-            tvTo.setText(accountText);
-            tvTo.setTag(accountSelected);
+    private void setTo() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            BeneficiaryDetail detail = bundle.getParcelable(Constants.BundleKeys.BUNDLE_BENEFITIARY_DETAILS);
+            if (detail != null) {
+                tvTo.setText(detail.getBeneficiaryEmailId());
+            }
         }
+    }
+
+    private void goBackToHomePage() {
+        if (getView() == null) return;
+
+        navController.navigate(R.id.action_interacFragment_to_nav_home);
     }
 }

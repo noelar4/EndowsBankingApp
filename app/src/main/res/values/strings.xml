@@ -80,4 +80,14 @@
     <string name="label_credti_card_balance">Current Outstanding Balance</string>
     <string name="label_creadit_card_number_title">Credit card number</string>
     <string name="label_transfer_choose">Select account</string>
+    <string name="label_pay_bill_title">Pay Utility Bills</string>
+    <string name="label_pay_bill_utility_type">Utility Type</string>
+    <string name="label_pay_bill_choose_account">Choose utility</string>
+    <string name="label_pay_bill_bill_no">Subscription Number</string>
+    <string name="label_pay_bill_no">Enter bill number</string>
+    <string name="label_utility_type_title">Choose type</string>
+    <string name="label_utility_hydo">HYDO</string>
+    <string name="label_utility_water">Water</string>
+    <string name="label_utility_gas">Gas</string>
+    <string name="label_utility_phone">Phone</string>
 </resources>

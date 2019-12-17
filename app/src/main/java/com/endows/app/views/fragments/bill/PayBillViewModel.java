@@ -1,4 +1,4 @@
-package com.endows.app.views.fragments.interac;
+package com.endows.app.views.fragments.bill;
 
 import android.app.Application;
 
@@ -19,26 +19,24 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class InteracViewModel extends AndroidViewModel implements TransactionCallback {
-
-    private static final String TAG = "InteracViewModel";
+public class PayBillViewModel extends AndroidViewModel implements TransactionCallback {
 
     private StringLiveData messageLiveData;
-    private StringLiveData chequingLiveData;
-    private StringLiveData savingsLiveData;
-    private BooleanLiveData interacLiveData;
+    private StringLiveData checkingLiveData;
+    private StringLiveData creditCardLiveData;
+    private BooleanLiveData payStatusLiveData;
 
-    private TransactionServiceImpl mTransactionServiceImp;
+    private TransactionServiceImpl mTransactionServiceImpl;
 
-    public InteracViewModel(@NonNull Application application) {
+    public PayBillViewModel(@NonNull Application application) {
         super(application);
 
         messageLiveData = new StringLiveData();
-        chequingLiveData = new StringLiveData();
-        savingsLiveData = new StringLiveData();
-        interacLiveData = new BooleanLiveData();
+        checkingLiveData = new StringLiveData();
+        creditCardLiveData = new StringLiveData();
+        payStatusLiveData = new BooleanLiveData();
 
-        mTransactionServiceImp = new TransactionServiceImpl();
+        mTransactionServiceImpl = new TransactionServiceImpl();
 
         setAccounts();
     }
@@ -47,25 +45,23 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
         return messageLiveData;
     }
 
-    StringLiveData getChequingLiveData() {
-        return chequingLiveData;
+    StringLiveData getCheckingLiveData() {
+        return checkingLiveData;
     }
 
-    StringLiveData getSavingsLiveData() {
-        return savingsLiveData;
+    StringLiveData getCreditCardLiveData() {
+        return creditCardLiveData;
     }
 
-    BooleanLiveData getInteracLiveData() {
-        return interacLiveData;
+    BooleanLiveData getPayStatusLiveData() {
+        return payStatusLiveData;
     }
-
 
     private void setAccounts() {
         Customers customers = ((EndowsApplication) getApplication()).getCustomers();
         if (customers == null) return;
 
         StringBuilder chequingBuilder = new StringBuilder("Chequing (");
-        StringBuilder savingsBuilder = new StringBuilder("Savings (");
         StringBuilder creditCardBuilder = new StringBuilder("Credit Card (");
 
         List<AccountDetails> accountDetails = customers.getAccountDetails();
@@ -79,31 +75,33 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
                     chequingBuilder.append(") -- ");
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     chequingBuilder.append(balance);
-                    chequingLiveData.setValue(chequingBuilder.toString());
-                } else {
-                    savingsBuilder.append(lastFourNo);
-                    savingsBuilder.append(") -- ");
-                    String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
-                    savingsBuilder.append(balance);
-                    savingsLiveData.setValue(savingsBuilder.toString());
+                    checkingLiveData.setValue(chequingBuilder.toString());
+                }
+            }
+
+            List<CardDetails> details = customers.getCardDetails();
+            for (CardDetails card :
+                    details) {
+                if (card.getCardType() == 1) {
+                    int length = card.getCardNumber().length();
+                    String lastFourNo = (card.getCardNumber().subSequence(length - 4, length)).toString();
+                    creditCardBuilder.append(lastFourNo);
+                    creditCardBuilder.append(")");
+                    creditCardLiveData.setValue(creditCardBuilder.toString());
+                    break;
                 }
             }
         }
     }
 
-    public void doInterac(String receiverEmailId, String amount) {
-        Customers customers = ((EndowsApplication) getApplication()).getCustomers();
-        mTransactionServiceImp.interacMoneyTransfer(getApplication().getApplicationContext(),
-                this, String.valueOf(customers.getCustomerId()),
-                receiverEmailId, amount);
+    public void doBillPayment(boolean isCreditCard, String amount) {
+        if (amount.length() == 0) {
+            messageLiveData.setValue("Amount can not be empty");
+        }
     }
 
     @Override
     public void onTransactionCallback(TransactionResponse response) {
-        if (response.isSuccess()) {
-            interacLiveData.setValue(true);
-        } else {
-            interacLiveData.setValue(false);
-        }
+
     }
 }

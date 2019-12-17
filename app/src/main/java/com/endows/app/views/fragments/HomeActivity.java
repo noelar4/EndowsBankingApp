@@ -77,11 +77,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public void itemClicked(String item) {
         if (item.equals(Constants.NavItems.TRANSFER_BETWEEN)) {
-            navController.navigate(R.id.action_nav_home_to_transferFragment);
+            navController.navigate(R.id.transferFragment);
         } else if (item.equals(Constants.NavItems.INTERAC)) {
-            navController.navigate(R.id.action_nav_home_to_interacFragment);
+            navController.navigate(R.id.interacFragment);
         } else if (item.equals(Constants.NavItems.PAY_BILL)) {
-
+            navController.navigate(R.id.payBillFragment);
         } else if (item.equals(Constants.NavItems.HELP_SUPPORT)) {
 
         } else if (item.equals(Constants.NavItems.CONTACT_US)) {

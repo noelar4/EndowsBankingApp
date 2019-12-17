@@ -10,6 +10,7 @@ public interface Constants {
         String BUNDLE_CREDIT_CARD_DETAILS = "credit_card_details";
         String BUNDLE_CARD_DETAILS = "card_details";
         String BUNDLE_ACCOUNT_TYPE = "account_type";
+        String BUNDLE_BENEFITIARY_DETAILS = "benefitiary_details";
     }
 
     interface Templates {

@@ -23,26 +23,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, AppActivity.class);
                 startActivity(intent);
                 SplashActivity.this.finish();
             }
-        }, 3000);*/
-
-        FirebaseApp.initializeApp(this);
-        LoginService service = new LoginServiceImpl();
-        service.generateEmailVerificationCode(new LoginCallback() {
-            @Override
-            public void onLoginCallback(LoginResponse response) {
-                if(!response.isSuccess()) {
-                    System.out.println(" failure "+response.getErrResponse());
-                } else {
-                    System.out.println(" success "+response.getResponseMsg());
-                }
-            }
-        },"vibin2joby@gmail.com",this);
+        }, 3000);
     }
 }

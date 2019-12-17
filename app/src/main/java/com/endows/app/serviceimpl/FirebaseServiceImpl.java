@@ -214,6 +214,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
         FirebaseResponse response = new FirebaseResponse();
         try {
             myRef.child("Customers").child(custId).child("mobileAppPassword").setValue(password);
+            myRef.child("Customers").child(custId).child("isFirstTimeLogin").setValue("N");
             response.setSuccess(true);
         } catch (Exception e) {
             response.setErrors(new Errors("", e.getMessage(), e.getCause().toString()));

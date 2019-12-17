@@ -19,15 +19,17 @@ import com.endows.app.service.LoginService;
 public class LoginServiceImpl implements LoginService, Constants.ErrorConstants {
 
     @Override
-    public void generateSmsVerificationCode(final LoginCallback callback, String phoneNumber) {
+    public void generateSmsVerificationCode(final LoginCallback callback, final String phoneNumber) {
         final String otp = CommonHelper.generateOTP();
         final FirebaseService firebaseService = new FirebaseServiceImpl();
+        final LoginResponse response = new LoginResponse();
         firebaseService.getCustDetailsUsingPhoneNumber(new FirebaseCallback() {
             @Override
             public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
-                LoginResponse response = new LoginResponse();
                 try {
                     if (firebaseResponse.getCustomerObj() != null) {
+                        //Send otp to user and save it in DB
+                        SMSHelper.sendMessage(otp,phoneNumber);
                         firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), otp);
                         response.setResponseMsg("Verification code sent and saved in DB successfully");
                         response.setCustomerObj(firebaseResponse.getCustomerObj());
@@ -36,15 +38,13 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
                         response.setErrResponse(new Errors(E_007_CODE,E_007_MESSAGE,E_007_DESCRIPTION));
                         response.setSuccess(false);
                     }
-                    callback.onLoginCallback(response);
                 } catch (Exception e) {
                     response.setErrResponse(new Errors("",e.getMessage(),e.getCause().toString()));
                 }
             }
         },phoneNumber);
 
-        //Send otp to user and save it in DB
-        SMSHelper.sendMessage(otp,phoneNumber);
+        callback.onLoginCallback(response);
     }
 
     @Override
@@ -84,6 +84,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
             public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
                 LoginResponse response = new LoginResponse();
                 if (firebaseResponse.getCustomerObj() != null) {
+                    firebaseResponse.getCustomerObj().setVerificationCode(verificationCode);
                     firebaseService.saveVerificationCode(firebaseResponse.getCustomerObj().getCustomerId(), verificationCode);
                     // Sending email to the customer with the verification code
                     emailHelper.execute("");
@@ -130,8 +131,16 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
     }
 
     @Override
-    public void saveNewPassword(LoginCallback callback, String custId, String password) {
+    public LoginResponse saveNewPassword( String custId, String password) {
         final FirebaseService firebaseService = new FirebaseServiceImpl();
-        firebaseService.savePassword(custId,password);
+        LoginResponse response = new LoginResponse();
+        FirebaseResponse firebaseResponse = firebaseService.savePassword(custId,password);
+        if(firebaseResponse.isSuccess()) {
+            response.setSuccess(true);
+            response.setResponseMsg(firebaseResponse.getMessage());
+        } else {
+            response.setErrResponse(firebaseResponse.getErrors());
+        }
+        return response;
     }
 }

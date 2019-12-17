@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_home_to_payBillFragment"
             app:destination="@id/payBillFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
     </fragment>
 
     <fragment
@@ -82,6 +85,11 @@
             android:id="@+id/action_payBillFragment_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="com.endows.app.views.fragments.privacy.PrivacyFragment"
+        android:label="Privacy and safety"
+        tools:layout="@layout/fragment_privacy" />
 
 
 </navigation>

@@ -31,9 +31,10 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
         final String username = EncryptPasswords.decrypt("v0wTNKXJtZ9rCnVA7KJezo1j/9PfFYms");
         final String password = EncryptPasswords.decrypt("g+tpRVxNs1LTsXa01bcc4w==");
         Properties prop = new Properties();
-        prop.put("mail.smtp.ssl.trust",  "smtp.gmail.com");
-        //prop.put("mail.smtp.host", "smtp.gmail.com");
+        //prop.put("mail.smtp.ssl.trust",  "smtp.gmail.com");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
         prop.put("mail.smtp.port", "587");
+        prop.put("mail.debug", "true");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
 
@@ -62,9 +63,10 @@ public class EmailHelper extends AsyncTask<String, Void, Void> {
 
             text = getReplacedText(text);
             message.setContent(text, "text/html");
-
+            System.out.println("Trying to send email...");
             // sends the e-mail
             Transport.send(message);
+            System.out.println("Mail sent successfully");
 
         } catch (Exception e) {
             e.printStackTrace();

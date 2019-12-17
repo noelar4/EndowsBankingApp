@@ -58,6 +58,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                                     transactionResponse.setSuccess(false);
                                                     transactionResponse.setErrResponse(firebaseResponse.getErrors());
                                                 } else {
+                                                    transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                                     transactionResponse.setSuccess(true);
                                                 }
                                                 callback.onTransactionCallback(transactionResponse);
@@ -89,6 +90,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                                         transactionResponse.setSuccess(false);
                                                         transactionResponse.setErrResponse(firebaseResponse.getErrors());
                                                     } else {
+                                                        transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                                         transactionResponse.setSuccess(true);
                                                     }
                                                     callback.onTransactionCallback(transactionResponse);
@@ -145,6 +147,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                 transactionResponse.setSuccess(false);
                                 transactionResponse.setErrResponse(firebaseResponse.getErrors());
                             } else {
+                                transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                 transactionResponse.setSuccess(true);
                             }
                         } else {
@@ -186,6 +189,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                 transactionResponse.setSuccess(false);
                                 transactionResponse.setErrResponse(firebaseResponse.getErrors());
                             } else {
+                                transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                 transactionResponse.setSuccess(true);
                             }
                             callback.onTransactionCallback(transactionResponse);
@@ -222,6 +226,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                         transactionResponse.setSuccess(false);
                                         transactionResponse.setErrResponse(firebaseResponse.getErrors());
                                     } else {
+                                        transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                         transactionResponse.setSuccess(true);
                                     }
                                     callback.onTransactionCallback(transactionResponse);
@@ -246,6 +251,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                         transactionResponse.setSuccess(false);
                         transactionResponse.setErrResponse(firebaseResponse.getErrors());
                     } else {
+                        transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                         transactionResponse.setSuccess(true);
                     }
                 } else {
@@ -269,6 +275,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                     transactionResponse.setSuccess(false);
                     transactionResponse.setErrResponse(response.getErrors());
                 } else {
+                    transactionResponse.setCustomerObj(response.getCustomerObj());
                     transactionResponse.setSuccess(true);
                 }
                 callback.onTransactionCallback(transactionResponse);
@@ -279,7 +286,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
     private void interacValidation(final Context context,final String custId, final FirebaseService firebaseService, final String amount, final String senderCheqBalance, final String senderFirstName, final TransactionResponse transactionResponse,String receiverEmailId) {
         firebaseService.getCustDetailsUsingEmailId(new FirebaseCallback() {
             @Override
-            public void onCallbackCustomerDetails(FirebaseResponse firebaseResponse) {
+            public void onCallbackCustomerDetails(final FirebaseResponse firebaseResponse) {
                 String receiverCheqBalance = null;
                 if (firebaseResponse.getCustomerObj() != null) {
                     for (AccountDetails acctDetails : firebaseResponse.getCustomerObj().getAccountDetails()) {
@@ -302,6 +309,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                 transactionResponse.setSuccess(false);
                                 transactionResponse.setErrResponse(firebaseResponse1.getErrors());
                             } else {
+                                transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                 transactionResponse.setSuccess(true);
                             }
                         }
@@ -314,6 +322,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                 transactionResponse.setSuccess(false);
                                 transactionResponse.setErrResponse(response2.getErrors());
                             } else {
+                                transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                 transactionResponse.setSuccess(true);
                             }
                         }

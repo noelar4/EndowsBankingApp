@@ -31,6 +31,9 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
     private BooleanLiveData transferLiveData;
     private TransactionServiceImpl mTransactionServiceImp;
 
+    private int chequingBalance;
+    private int savingsBalance;
+
     public TransferViewModel(@NonNull Application application) {
         super(application);
         messageLiveData = new StringLiveData();
@@ -75,11 +78,31 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
 
         int from = (int) fromAccount;
         int to = (int) toAccount;
+
+        if (from == to) {
+            messageLiveData.setValue("FROM and TO can't be the same account");
+            return;
+        }
+
         Customers customers = ((EndowsApplication) getApplication()).getCustomers();
         if (customers == null) {
             messageLiveData.setValue("Session expired, Please logout and then login again for transaction");
             return;
         }
+
+        int amountInt = Integer.parseInt(amount);
+        if (from ==1) {
+            if (amountInt > chequingBalance) {
+                messageLiveData.setValue("Insufficient balance");
+                return;
+            }
+        } else {
+            if (amountInt > savingsBalance) {
+                messageLiveData.setValue("Insufficient balance");
+                return;
+            }
+        }
+
 
         String customerId = customers.getCustomerId();
         mTransactionServiceImp.transferBetweenAccounts(getApplication().getApplicationContext(), this, customerId, String.valueOf(from), String.valueOf(to), amount);
@@ -116,12 +139,14 @@ public class TransferViewModel extends AndroidViewModel implements TransactionCa
                     chequingBuilder.append(") -- ");
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     chequingBuilder.append(balance);
+                    chequingBalance = Integer.parseInt(account.getAccountBalance());
                     chequingLiveData.setValue(chequingBuilder.toString());
                 } else {
                     savingsBuilder.append(lastFourNo);
                     savingsBuilder.append(") -- ");
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     savingsBuilder.append(balance);
+                    savingsBalance = Integer.parseInt(account.getAccountBalance());
                     savingsLiveData.setValue(savingsBuilder.toString());
                 }
             }

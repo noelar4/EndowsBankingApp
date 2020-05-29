@@ -4,7 +4,9 @@ import android.app.Application;
 
 import com.endows.app.EndowsApplication;
 import com.endows.app.constants.Constants;
+import com.endows.app.helper.PDFManager;
 import com.endows.app.models.db.AccountDetails;
+import com.endows.app.models.db.CreditCardDetails;
 import com.endows.app.models.db.Customers;
 import com.endows.app.models.db.TransactionHistory;
 
@@ -78,6 +80,43 @@ public class TransactionViewModel extends AndroidViewModel {
                 }
             }
         }
+    }
+
+    void generatePDF() {
+
+        Customers customers = ((EndowsApplication) getApplication()).getCustomers();
+        if (getAccountTypeLiveData().getValue() == 0) {
+            List<AccountDetails> accountDetails = customers.getAccountDetails();
+            for (AccountDetails details:
+                 accountDetails) {
+                if (details.getAccountType().equals(Constants.TransactionConstants.CHEQUING_ACCOUNT)) {
+                    if (details.getTransactionHistory() != null) {
+                        new PDFManager().generatePdfReport(getApplication().getApplicationContext(), details.getTransactionHistory());
+                        break;
+                    }
+                }
+            }
+        } else if (getAccountTypeLiveData().getValue() == 1) {
+            List<AccountDetails> accountDetails = customers.getAccountDetails();
+            for (AccountDetails details:
+                    accountDetails) {
+                if (details.getAccountType().equals(Constants.TransactionConstants.SAVINGS_ACCOUNT)) {
+                    if (details.getTransactionHistory() != null) {
+                        new PDFManager().generatePdfReport(getApplication().getApplicationContext(), details.getTransactionHistory());
+                        break;
+                    }
+                }
+            }
+        } else {
+            CreditCardDetails details = customers.getCreditCardDetails();
+            if (details != null) {
+                List<TransactionHistory> histories = details.getTransactionHistory();
+                if (histories != null) {
+                    new PDFManager().generatePdfReport(getApplication().getApplicationContext(), histories);
+                }
+            }
+        }
+
     }
 
 }

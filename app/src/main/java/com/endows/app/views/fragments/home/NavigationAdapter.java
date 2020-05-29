@@ -20,7 +20,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Na
             Constants.NavItems.INTERAC,
             Constants.NavItems.PAY_BILL,
             Constants.NavItems.HELP_SUPPORT,
-            Constants.NavItems.SETTING,
             Constants.NavItems.CONTACT_US,
             Constants.NavItems.SIGN_OUT
     };

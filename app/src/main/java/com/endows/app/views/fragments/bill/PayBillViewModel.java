@@ -1,17 +1,21 @@
 package com.endows.app.views.fragments.bill;
 
 import android.app.Application;
+import android.os.Handler;
 
 import com.endows.app.EndowsApplication;
+import com.endows.app.callbacks.FirebaseCallback;
 import com.endows.app.callbacks.TransactionCallback;
 import com.endows.app.common.BooleanLiveData;
 import com.endows.app.common.StringLiveData;
 import com.endows.app.constants.Constants;
 import com.endows.app.helper.PreferenceManager;
+import com.endows.app.models.app.FirebaseResponse;
 import com.endows.app.models.app.TransactionResponse;
 import com.endows.app.models.db.AccountDetails;
 import com.endows.app.models.db.CardDetails;
 import com.endows.app.models.db.Customers;
+import com.endows.app.serviceimpl.FirebaseServiceImpl;
 import com.endows.app.serviceimpl.TransactionServiceImpl;
 
 import java.util.List;
@@ -20,7 +24,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class PayBillViewModel extends AndroidViewModel implements TransactionCallback {
+public class PayBillViewModel extends AndroidViewModel implements TransactionCallback, FirebaseCallback {
 
     private StringLiveData messageLiveData;
     private StringLiveData checkingLiveData;
@@ -28,6 +32,10 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
     private BooleanLiveData payStatusLiveData;
 
     private TransactionServiceImpl mTransactionServiceImpl;
+
+    private FirebaseServiceImpl service;
+
+    private String custId;
 
     public PayBillViewModel(@NonNull Application application) {
         super(application);
@@ -37,6 +45,7 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
         creditCardLiveData = new StringLiveData();
         payStatusLiveData = new BooleanLiveData();
 
+        service = new FirebaseServiceImpl();
         mTransactionServiceImpl = new TransactionServiceImpl();
 
         setAccounts();
@@ -128,6 +137,8 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
             return;
         }
 
+        custId = customers.getCustomerId();
+
         mTransactionServiceImpl.payUtilityBills(getApplication().getApplicationContext(),
                 this, customers.getCustomerId(), amount, (Boolean) isCreditCard);
     }
@@ -136,14 +147,28 @@ public class PayBillViewModel extends AndroidViewModel implements TransactionCal
     public void onTransactionCallback(TransactionResponse response) {
         if (response.isSuccess()) {
             ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
-            payStatusLiveData.setValue(true);
-        } else {
-            payStatusLiveData.setValue(false);
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                service.getCustDetailsUsingCustomerId(PayBillViewModel.this, custId);
+            }
+        }, 2000);
     }
 
     private void saveType(String type, String billNo) {
         PreferenceManager manager = new PreferenceManager(getApplication().getApplicationContext());
         manager.setPreference(type, billNo);
+    }
+
+    @Override
+    public void onCallbackCustomerDetails(FirebaseResponse response) {
+        if (response.isSuccess()) {
+            ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
+            payStatusLiveData.setValue(true);
+        } else {
+            payStatusLiveData.setValue(false);
+        }
     }
 }

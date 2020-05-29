@@ -142,7 +142,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                             }
                         }
                         if (getStringAsInt(senderCheqBalance) > 0 && getStringAsInt(senderCheqBalance) > getStringAsInt(amount)) {
-                            interacValidation(context,custId, firebaseService, amount, senderCheqBalance, senderName, transactionResponse,receiverEmailId);
+                            interacValidation(callback,context,custId, firebaseService, amount, senderCheqBalance, senderName, transactionResponse,receiverEmailId);
                             if(firebaseResponse.getErrors() != null ) {
                                 transactionResponse.setSuccess(false);
                                 transactionResponse.setErrResponse(firebaseResponse.getErrors());
@@ -231,11 +231,14 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
                                         transactionResponse.setCustomerObj(firebaseResponse.getCustomerObj());
                                         transactionResponse.setSuccess(true);
                                     }
-                                    callback.onTransactionCallback(transactionResponse);
+
                                 }
                             },context, true, payAmt, custId, TransactionConstants.CHEQUING_ACCOUNT, chequingAcct.getAccountBalance(), tnxHistObj);
                         }
+
+                        callback.onTransactionCallback(transactionResponse);
                     }
+
                 }
             },custId);
         }
@@ -285,7 +288,7 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
         },custId);
     }
 
-    private void interacValidation(final Context context,final String custId, final FirebaseService firebaseService, final String amount, final String senderCheqBalance, final String senderFirstName, final TransactionResponse transactionResponse,String receiverEmailId) {
+    private void interacValidation(final TransactionCallback callback,final Context context,final String custId, final FirebaseService firebaseService, final String amount, final String senderCheqBalance, final String senderFirstName, final TransactionResponse transactionResponse,String receiverEmailId) {
         firebaseService.getCustDetailsUsingEmailId(new FirebaseCallback() {
             @Override
             public void onCallbackCustomerDetails(final FirebaseResponse firebaseResponse) {

@@ -1,14 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.fragments.contact.ContactFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15"/>
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_45"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_contact_90"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_30"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_60"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLayoutBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_90"/>
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_contact_call"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/img_call"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_30"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_contact_email"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/img_email"
+        app:layout_constraintTop_toTopOf="@+id/gl_contact_60"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_90"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_contact_sms"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/img_sms"
+        app:layout_constraintTop_toTopOf="@+id/gl_contact_30"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_60"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_sms"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_call"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_45"
+        android:textSize="@dimen/_16sdp"
+        android:fontFamily="@font/avenir_roman"
+        android:textColor="@color/colorTextColor"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/label_contact_sms_sub"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_call"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintTop_toBottomOf="@+id/gl_contact_45"
+        android:fontFamily="@font/avenir_roman"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorTextColor"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_call"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_sms"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_15"
+        android:textSize="@dimen/_16sdp"
+        android:fontFamily="@font/avenir_roman"
+        android:textColor="@color/colorTextColor"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/label_contact_call_sub"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_call"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintTop_toBottomOf="@+id/gl_contact_15"
+        android:fontFamily="@font/avenir_roman"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorTextColor"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_email"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_sms"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintBottom_toTopOf="@+id/gl_contact_75"
+        android:textSize="@dimen/_16sdp"
+        android:fontFamily="@font/avenir_roman"
+        android:textColor="@color/colorTextColor"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:text="@string/label_contact_email_sub"
+        app:layout_constraintStart_toEndOf="@+id/iv_contact_call"
+        android:layout_marginStart="@dimen/_16sdp"
+        app:layout_constraintTop_toBottomOf="@+id/gl_contact_75"
+        android:fontFamily="@font/avenir_roman"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/colorTextColor"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.endows.app.views.activities.HomeActivity"
+            android:name="com.endows.app.views.activities.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme">
 

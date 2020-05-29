@@ -115,7 +115,7 @@ public class PDFManager {
                         table.addCell("" + i);
                         table.addCell(tnxHistory.get(i).getTo() != null ? tnxHistory.get(i).getTo() : "");
                         table.addCell(tnxHistory.get(i).getFrom() != null ? tnxHistory.get(i).getFrom() : "");
-                        table.addCell(tnxHistory.get(i).getAmount() != null ? tnxHistory.get(i).getAmount() : "");
+                        table.addCell(tnxHistory.get(i).getAmount() != null ? (!("Y".equalsIgnoreCase(tnxHistory.get(i).getIsCredit()))?"-$"+tnxHistory.get(i).getAmount():"+$"+tnxHistory.get(i).getAmount()) : "");
                         table.addCell(tnxHistory.get(i).getTimestamp() != null ? tnxHistory.get(i).getTimestamp() : "");
                     }
                 }
@@ -126,7 +126,7 @@ public class PDFManager {
                 ftable.setWidths(columnWidthaa);
 
                 doc.add(table);
-                Toast.makeText(context, "created PDF", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Downloaded PDF at "+path, Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 errors = new Errors("",e.getMessage(),e.getCause().toString());
             } finally {

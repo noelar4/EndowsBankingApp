@@ -71,7 +71,7 @@ public interface Constants {
         String PAY_BILL = "Pay Bill";
         String SETTING = "Settings";
         String CONTACT_US = "Contact us";
-        String HELP_SUPPORT = "Help & Support";
+        String HELP_SUPPORT = "Privacy & Safety";
         String SIGN_OUT = "Sign out";
     }
 }

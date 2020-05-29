@@ -315,7 +315,7 @@ public class FirebaseServiceImpl implements FirebaseService, Constants {
                                 }
                             }
                             //Updated the new balance in DB
-                            acctDetails.setAccountBalance(newBalance);
+                            acctDetails.setAccountBalance(String.valueOf(CommonHelper.getStringAsInt(newBalance) - (CommonHelper.getStringAsInt(tnxAmt))));
 
                             //Add the new transaction in the history section
                             if (acctDetails.getTransactionHistory() != null) {

@@ -46,7 +46,7 @@
         android:fontFamily="@font/avenir_light"
         android:hint="@string/hint_transfer_amount"
         android:paddingTop="@dimen/_8sdp"
-        android:inputType="numberDecimal"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="@id/view_box_interac_amount"
         app:layout_constraintStart_toStartOf="@id/view_box_interac_amount"
         app:layout_constraintTop_toBottomOf="@+id/tv_interac_amount" />

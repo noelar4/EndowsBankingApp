@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_nav_home_to_privacyFragment"
             app:destination="@id/privacyFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_contactFragment"
+            app:destination="@id/contactFragment" />
     </fragment>
 
     <fragment
@@ -90,6 +93,11 @@
         android:name="com.endows.app.views.fragments.privacy.PrivacyFragment"
         android:label="Privacy and safety"
         tools:layout="@layout/fragment_privacy" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.endows.app.views.fragments.contact.ContactFragment"
+        android:label="Contact us"
+        tools:layout="@layout/fragment_contact" />
 
 
 </navigation>

@@ -33,6 +33,7 @@ public class ChequingFragment extends Fragment {
     private AppCompatTextView tvExpiry;
     private AppCompatTextView tvIncome;
     private AppCompatTextView tvExpense;
+    private AppCompatTextView tvToday;
 
     private ChequingViewModel mChequingViewModel;
 

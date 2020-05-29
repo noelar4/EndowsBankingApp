@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.endows.app.R;
 import com.endows.app.common.Toast;
 import com.endows.app.constants.Constants;
-import com.endows.app.views.activities.HomeActivity;
+import com.endows.app.views.activities.home.HomeActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

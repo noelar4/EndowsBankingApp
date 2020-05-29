@@ -111,8 +111,6 @@ public class InteracFragment extends Fragment {
     }
 
     private void goBackToHomePage() {
-        if (getView() == null) return;
-
-        navController.navigate(R.id.action_interacFragment_to_nav_home);
+        navController.navigate(R.id.nav_home);
     }
 }

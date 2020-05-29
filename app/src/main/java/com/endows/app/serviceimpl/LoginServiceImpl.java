@@ -137,6 +137,7 @@ public class LoginServiceImpl implements LoginService, Constants.ErrorConstants 
         FirebaseResponse firebaseResponse = firebaseService.savePassword(custId,password);
         if(firebaseResponse.isSuccess()) {
             response.setSuccess(true);
+            response.setCustomerObj(firebaseResponse.getCustomerObj());
             response.setResponseMsg(firebaseResponse.getMessage());
         } else {
             response.setErrResponse(firebaseResponse.getErrors());

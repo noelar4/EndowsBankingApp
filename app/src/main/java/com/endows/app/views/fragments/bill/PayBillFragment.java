@@ -87,6 +87,8 @@ public class PayBillFragment extends Fragment implements View.OnClickListener {
         accountSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
         utilityTypeSheet.setState(BottomSheetBehavior.STATE_HIDDEN);
 
+        tvCreditCard.setVisibility(View.GONE);
+
         tvFrom.setOnClickListener(this);
         tvChooseUtilityType.setOnClickListener(this);
         tvChequing.setOnClickListener(this);
@@ -173,6 +175,6 @@ public class PayBillFragment extends Fragment implements View.OnClickListener {
     }
 
     private void goBackToHome() {
-        navController.navigate(R.id.action_payBillFragment_to_nav_home);
+        navController.navigate(R.id.nav_home);
     }
 }

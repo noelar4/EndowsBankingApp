@@ -1,16 +1,20 @@
 package com.endows.app.views.fragments.interac;
 
 import android.app.Application;
+import android.os.Handler;
 
 import com.endows.app.EndowsApplication;
+import com.endows.app.callbacks.FirebaseCallback;
 import com.endows.app.callbacks.TransactionCallback;
 import com.endows.app.common.BooleanLiveData;
 import com.endows.app.common.StringLiveData;
 import com.endows.app.constants.Constants;
+import com.endows.app.models.app.FirebaseResponse;
 import com.endows.app.models.app.TransactionResponse;
 import com.endows.app.models.db.AccountDetails;
 import com.endows.app.models.db.CardDetails;
 import com.endows.app.models.db.Customers;
+import com.endows.app.serviceimpl.FirebaseServiceImpl;
 import com.endows.app.serviceimpl.TransactionServiceImpl;
 
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class InteracViewModel extends AndroidViewModel implements TransactionCallback {
+public class InteracViewModel extends AndroidViewModel implements TransactionCallback, FirebaseCallback {
 
     private static final String TAG = "InteracViewModel";
 
@@ -28,6 +32,12 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
     private StringLiveData savingsLiveData;
     private BooleanLiveData interacLiveData;
 
+    private int chequingBalance;
+    private int savingsBalance;
+
+    private String custId;
+
+    private FirebaseServiceImpl service;
     private TransactionServiceImpl mTransactionServiceImp;
 
     public InteracViewModel(@NonNull Application application) {
@@ -39,6 +49,7 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
         interacLiveData = new BooleanLiveData();
 
         mTransactionServiceImp = new TransactionServiceImpl();
+        service = new FirebaseServiceImpl();
 
         setAccounts();
     }
@@ -79,12 +90,14 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
                     chequingBuilder.append(") -- ");
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     chequingBuilder.append(balance);
+                    chequingBalance = Integer.parseInt(account.getAccountBalance());
                     chequingLiveData.setValue(chequingBuilder.toString());
                 } else {
                     savingsBuilder.append(lastFourNo);
                     savingsBuilder.append(") -- ");
                     String balance = String.format(Locale.getDefault(), Constants.Templates.MONEY_TEMPLATE, account.getAccountBalance());
                     savingsBuilder.append(balance);
+                    savingsBalance = Integer.parseInt(account.getAccountBalance());
                     savingsLiveData.setValue(savingsBuilder.toString());
                 }
             }
@@ -92,14 +105,41 @@ public class InteracViewModel extends AndroidViewModel implements TransactionCal
     }
 
     public void doInterac(String receiverEmailId, String amount) {
+
+        int amountInt = Integer.parseInt(amount);
+        if (amountInt > chequingBalance) {
+            messageLiveData.setValue("Insufficient balance");
+            return;
+        }
+
+
         Customers customers = ((EndowsApplication) getApplication()).getCustomers();
-        mTransactionServiceImp.interacMoneyTransfer(getApplication().getApplicationContext(),
+        custId = customers.getCustomerId();
+
+                mTransactionServiceImp.interacMoneyTransfer(getApplication().getApplicationContext(),
                 this, String.valueOf(customers.getCustomerId()),
                 receiverEmailId, amount);
     }
 
     @Override
-    public void onTransactionCallback(TransactionResponse response) {
+    public void onTransactionCallback(final TransactionResponse response) {
+        if (response.isSuccess()) {
+            ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
+
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                service.getCustDetailsUsingCustomerId(InteracViewModel.this, custId);
+            }
+        }, 2000);
+
+    }
+
+
+    @Override
+    public void onCallbackCustomerDetails(FirebaseResponse response) {
         if (response.isSuccess()) {
             ((EndowsApplication) getApplication()).setCustomers(response.getCustomerObj());
             interacLiveData.setValue(true);

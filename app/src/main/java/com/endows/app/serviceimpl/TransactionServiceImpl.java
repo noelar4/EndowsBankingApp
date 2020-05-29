@@ -212,6 +212,8 @@ public class TransactionServiceImpl extends CommonHelper implements TransactionS
 
         if(isPayFromCredit) {
             firebaseService.addNewTransactionForCreditCard(context,custId, payAmt, getTransactionHistoryObj(true, false, "", "Paying Utility bills", payAmt));
+            transactionResponse.setSuccess(true);
+            callback.onTransactionCallback(transactionResponse);
         } else {
             firebaseService.getCustDetailsUsingCustomerId(new FirebaseCallback() {
                 @Override
